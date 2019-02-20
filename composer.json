@@ -30,7 +30,7 @@
         "process-timeout" : 0
     },
     "scripts": {
-        "start": "php -S localhost:8080 -t public",
+        "dev": "gulp dev",
         "test": "phpunit"
     }
 

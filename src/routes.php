@@ -15,7 +15,7 @@ $app->get('/[{pagename}]', function (Request $request, Response $response, array
 
 
     $PDO = new PDO('pgsql:host=localhost;dbname=becode', 'becode', 'becode');
-    $users = $PDO->query('SELECT user, username, email from users')->fetchAll(PDO::FETCH_ASSOC);
+    $users = $PDO->query('SELECT user, username, email FROM users')->fetchAll(PDO::FETCH_ASSOC);
     $args['users'] = $users;
 
     // Render index view
