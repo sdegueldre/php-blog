@@ -1,18 +1,42 @@
-version: '2'
-
-volumes:
-    logs:
-        driver: local
+version: '3.1'
 
 services:
-    slim:
-        image: php:7-alpine
-        working_dir: /var/www
-        command: php -S 0.0.0.0:8080 -t public
-        environment:
-            docker: "true"
-        ports:
-            - 8080:8080
-        volumes:
-            - .:/var/www
-            - logs:/var/www/logs
+
+  # La base de données PostgreSQL. Elle est configurée de façon à être joignable sur
+  # localhost:5432 .
+  #
+  # Utilisateur: becode
+  # Mot de passe: becode
+  # Base de données par défault: becode
+
+  db:
+    image: postgres:11.2
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbvolume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: becode
+      POSTGRES_PASSWORD: becode
+      POSTGRES_DB: becode
+
+  # Un serveur Adminer pour pouvoir tester les fonctionnalités de la base de données et
+  # faire du debugging. Il est joignable avec un simple browser en utilisant http://localhost:9000 .
+  #
+  # Voir la configuration de PostgreSQL pour les accès.
+
+  adminer:
+    image: adminer:4.7
+    depends_on:
+      - db
+    ports:
+      - "9000:8080"
+
+# Un volume nommé pour stocker le contenu de la base de données PostgreSQL. De cette façon
+# le contenu de la base de données ne sera pas effacé à chaque lancement des services.
+#
+# Pour le cleaner il suffit de faire un `docker-compose down -v` suivi d'un
+# `docker-compose up`.
+
+volumes:
+  dbvolume:
