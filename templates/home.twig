@@ -1,9 +1,7 @@
 {% extends 'common.twig' %}
 
-{% block body %}
-  <h1>Hello, welcome to the {{ pagename }} page</h1>
-  <h2>User list: </h2>
-  <h3>Database user: {{ users[0].user }}</h3>
+{% block content %}
+  <h1>CRUD application home page</h1>
   {% for user in users %}
     <div class="">
       <p>username: {{ user.username }}</p>

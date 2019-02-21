@@ -1,15 +1,21 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
-const {exec} = require('child_process');
+const {exec, spawn} = require('child_process');
 
 var phpServ;
+var composeUp;
 
-function dev(){
-  exec('docker-compose up -d', () => {
-    gulp.watch(['src/scss/*.scss'], {ignoreInitial: false}, buildSass);
-    phpServ = exec('php -S localhost:8080 -t public');
-    return phpServ;
-  });
+function dev(callback){
+  gulp.watch(['src/scss/*.scss'], {ignoreInitial: false}, buildSass);
+
+  let processCount = 0;
+  composeUp = spawn('docker-compose', ['up'], {stdio: ['ignore', 'inherit', 'inherit']});
+  processCount++;
+  composeUp.on('exit', () => processCount = exitIfClean(processCount, callback));
+
+  phpServ = spawn('php', ['-S', 'localhost:8080', '-t', 'public'], {stdio: ['ignore', 'inherit', 'inherit']});
+  processCount++;
+  phpServ.on('exit', () => processCount = exitIfClean(processCount, callback));
 }
 
 function buildSass() {
@@ -18,11 +24,21 @@ function buildSass() {
     .pipe(gulp.dest('public/css'));
 }
 
-exports.dev = dev;
-exports.sass = buildSass;
+function exitIfClean(processCount, callback){
+  console.log('exitIfClean:', processCount);
+  processCount--;
+  if(processCount == 0){
+    callback();
+    process.exit();
+  }
+  return processCount;
+}
 
 process.on('SIGINT', () => {
   console.log('\nReceived SIGINT, cleaning up...');
-  phpServ.kill();
-  exec('docker-compose down', process.exit);
+  composeUp.kill('SIGINT');
+  phpServ.kill('SIGINT');
 });
+
+exports.dev = dev;
+exports.sass = buildSass;

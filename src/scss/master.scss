@@ -1,3 +1,32 @@
 html {
   font-family: sans-serif;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    li {
+      width: 5rem;
+      height: 2rem;
+      background-color: lighten(green, 10%);
+      &:hover, &.active {
+        background-color: green;
+      }
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    a {
+      color: #000;
+      text-decoration: none;
+      height: 50%;
+    }
+}

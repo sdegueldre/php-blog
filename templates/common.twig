@@ -2,13 +2,13 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Test site | {{ pagename }}</title>
+    <title>CRUD app | {{ pagename }}</title>
     <link rel="stylesheet" href="/css/master.css">
   </head>
   <body>
+    {{ include('navbar.twig') }}
 
-    {% block body %}
+    {% block content %}
     {% endblock %}
-
   </body>
 </html>

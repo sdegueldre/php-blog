@@ -22,5 +22,8 @@
   "devDependencies": {
     "gulp": "^4.0.0",
     "gulp-sass": "^4.0.2"
+  },
+  "dependencies": {
+    "why-is-node-running": "^2.0.3"
   }
 }

@@ -1,0 +1,10 @@
+{% extends 'common.twig' %}
+
+{% block content %}
+  {% for user in users %}
+    <div class="user">
+      <p>{{user.username}}</p>
+      <p>{{user.email}}</p>
+    </div>
+  {% endfor %}
+{% endblock %}
