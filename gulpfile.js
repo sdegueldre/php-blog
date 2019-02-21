@@ -40,5 +40,5 @@ process.on('SIGINT', () => {
   phpServ.kill('SIGINT');
 });
 
-exports.dev = dev;
+exports.default = dev;
 exports.sass = buildSass;
