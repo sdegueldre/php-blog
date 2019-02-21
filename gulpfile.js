@@ -9,11 +9,11 @@ function dev(callback){
   gulp.watch(['src/scss/*.scss'], {ignoreInitial: false}, buildSass);
 
   let processCount = 0;
-  composeUp = spawn('docker-compose', ['up'], {stdio: ['ignore', 'inherit', 'inherit']});
+  composeUp = spawn('docker-compose', ['up'], {detached: true, stdio: ['ignore', 'inherit', 'inherit']});
   processCount++;
   composeUp.on('exit', () => processCount = exitIfClean(processCount, callback));
 
-  phpServ = spawn('php', ['-S', 'localhost:8080', '-t', 'public'], {stdio: ['ignore', 'inherit', 'inherit']});
+  phpServ = spawn('php', ['-S', 'localhost:8080', '-t', 'public'], {detached: true, stdio: ['ignore', 'inherit', 'inherit']});
   processCount++;
   phpServ.on('exit', () => processCount = exitIfClean(processCount, callback));
 }
@@ -25,7 +25,6 @@ function buildSass() {
 }
 
 function exitIfClean(processCount, callback){
-  console.log('exitIfClean:', processCount);
   processCount--;
   if(processCount == 0){
     callback();
