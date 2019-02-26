@@ -1,9 +1,5 @@
 --Script initialisation SQL
 
---Création de la base de donnés db_blog
-
-CREATE DATABASE db_blog;
-
 --Table articles
 
 CREATE TABLE articles (
@@ -17,6 +13,7 @@ CREATE TABLE articles (
 
 CREATE TABLE users (
   id_user SERIAL PRIMARY KEY,
+  username TEXT NOT NULL UNIQUE,
   email TEXT NOT NULL UNIQUE,
   hash_pass VARCHAR(255),
   permission INT
