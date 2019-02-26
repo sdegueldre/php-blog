@@ -3,12 +3,6 @@
 
 $container = $app->getContainer();
 
-// view renderer
-$container['renderer'] = function ($c) {
-    $settings = $c->get('settings')['renderer'];
-    return new Slim\Views\PhpRenderer($settings['template_path']);
-};
-
 // monolog
 $container['logger'] = function ($c) {
     $settings = $c->get('settings')['logger'];
@@ -24,4 +18,15 @@ $container['db'] = function($c) {
     $connstring = strtr($connstring, $settings);
 
     return new PDO($connstring);
+};
+
+// view renderer
+$container['renderer'] = function ($c) {
+    $loader = new \Twig\Loader\FilesystemLoader('../templates');
+    $twig = new \Twig\Environment($loader);
+    $twig->addGlobal('router', $c->get('router'));
+
+    return function($response, $template, $args) use ($twig){
+        return $response->getBody()->write($twig->render($template, $args));
+    };
 };
