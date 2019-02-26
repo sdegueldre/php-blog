@@ -13,11 +13,11 @@ return [
 
         // DataBase settings
         'db' => [
-            'dbType' => 'pgsql',
-            'host' => 'localhost',
-            'dbname' => 'becode',
-            'user' => 'becode',
-            'password' => 'becode',
+            '$dbType' => 'pgsql',
+            '$host' => 'localhost',
+            '$dbname' => 'becode',
+            '$username' => 'becode',
+            '$password' => 'becode',
         ],
 
         //Twig settings

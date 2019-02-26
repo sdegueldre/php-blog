@@ -20,11 +20,8 @@ $container['logger'] = function ($c) {
 
 $container['db'] = function($c) {
     $settings = $c->get('settings')['db'];
-    $connstring = $settings['dbType'] . ':';
-    unset($settings['dbType']);
-    foreach ($settings as $key => $value) {
-        $connstring .= "$key=$value;";
-    }
+    $connstring = '$dbType:host=$host;dbname=$dbname;user=$username;password=$password';
+    $connstring = strtr($connstring, $settings);
 
     return new PDO($connstring);
 };
