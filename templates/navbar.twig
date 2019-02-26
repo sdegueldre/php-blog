@@ -1,7 +1,0 @@
-<ul class="navbar">
-  {% for routename, linkname in navbar %}
-    <a href={{ router.pathFor(routename) }}>
-      <li {% if linkname == pagename %}class="active"{% endif %}>{{linkname}}</li>
-    </a>
-  {% endfor %}
-</ul>

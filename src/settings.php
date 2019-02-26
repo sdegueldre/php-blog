@@ -10,5 +10,22 @@ return [
             'path' => 'php://stdout',
             'level' => \Monolog\Logger::DEBUG,
         ],
+
+        // DataBase settings
+        'db' => [
+            'dbType' => 'pgsql',
+            'host' => 'localhost',
+            'dbname' => 'becode',
+            'user' => 'becode',
+            'password' => 'becode',
+        ],
+
+        //Twig settings
+        'twig' => [
+            'templateDir' => '../templates',
+            'envSettings' => [
+
+            ],
+        ],
     ],
 ];

@@ -17,3 +17,14 @@ $container['logger'] = function ($c) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
 };
+
+$container['db'] = function($c) {
+    $settings = $c->get('settings')['db'];
+    $connstring = $settings['dbType'] . ':';
+    unset($settings['dbType']);
+    foreach ($settings as $key => $value) {
+        $connstring .= "$key=$value;";
+    }
+
+    return new PDO($connstring);
+};

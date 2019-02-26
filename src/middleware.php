@@ -1,5 +1,6 @@
 <?php
 
+/* Middleware example
 $app->add(function($request, $response, $next) {
 	$uri = $request->getUri();
   if(preg_match('/~.*\/(.*)/', $uri, $newuri) != 0){
@@ -9,3 +10,4 @@ $app->add(function($request, $response, $next) {
 
 	return $response;
 });
+*/
