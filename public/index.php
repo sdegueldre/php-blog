@@ -9,20 +9,20 @@ if (PHP_SAPI == 'cli-server') {
     }
 }
 
-require __DIR__ . '/../vendor/autoload.php';
+require '../vendor/autoload.php';
 
 // Instantiate the app
-$settings = require __DIR__ . '/../src/settings.php';
+$settings = require '../src/settings.php';
 $app = new \Slim\App($settings);
 
 // Set up dependencies
-require __DIR__ . '/../src/dependencies.php';
+require '../src/dependencies.php';
 
 // Register middleware
-require __DIR__ . '/../src/middleware.php';
+require '../src/middleware.php';
 
 // Register routes
-require __DIR__ . '/../src/routes.php';
+require '../src/routes.php';
 
 // Run app
 $app->run();
