@@ -21,11 +21,12 @@ $container['db'] = function($c) {
 };
 
 // view renderer
-$container['renderer'] = function ($c) {
+$container['render'] = function ($c) {
     $loader = new \Twig\Loader\FilesystemLoader('../templates');
     $twig = new \Twig\Environment($loader);
     $twig->addGlobal('router', $c->get('router'));
-
+    $twig->addGlobal('session', $_SESSION);
+    
     return function($response, $template, $args) use ($twig){
         return $response->getBody()->write($twig->render($template, $args));
     };

@@ -9,6 +9,8 @@ if (PHP_SAPI == 'cli-server') {
     }
 }
 
+session_start();
+
 require '../vendor/autoload.php';
 
 // Instantiate the app
