@@ -5,7 +5,7 @@ use Slim\Http\Response;
 
 // Routes
 
-$app->get('/~{domain}', function (Request $request, Response $response, array $args) {
+$app->get('/~{domain}[/]', function (Request $request, Response $response, array $args) {
 
     $query; //todo
     $articles = [];
@@ -58,7 +58,7 @@ $app->get('/~{domain}/dashboard', function (Request $request, Response $response
     return ($this->render)($response, 'dashboard.twig', $args);
 })->setName('dashboard');
 
-$app->get('/~{domain}/[{pagename}]', function (Request $request, Response $response, array $args) {
+$app->get('/~{domain}/{pagename}', function (Request $request, Response $response, array $args) {
     $route = $args['pagename'];
     $this->logger->info("Slim: Unknown route '/$route'");
 
