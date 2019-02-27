@@ -1,4 +1,5 @@
 <?php
+use Slim\Http\Response;
 // DIC configuration
 
 $container = $app->getContainer();
@@ -27,8 +28,9 @@ $container['render'] = function ($c) {
     $twig->addGlobal('router', $c->get('router'));
     $twig->addGlobal('session', $_SESSION);
 
-    return function($response, $template, $args) use ($twig){
-        return $response->getBody()->write($twig->render($template, $args));
+    return function(Response $response, $template, $args) use ($twig){
+        $response->getBody()->write($twig->render($template, $args));
+        return $response;
     };
 };
 

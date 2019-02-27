@@ -57,10 +57,3 @@ $app->get('/~{domain}/edit/{id}', function (Request $request, Response $response
 $app->get('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
     return ($this->render)($response, 'dashboard.twig', $args);
 })->setName('dashboard');
-
-$app->get('/~{domain}/{pagename}', function (Request $request, Response $response, array $args) {
-    $route = $args['pagename'];
-    $this->logger->info("Slim: Unknown route '/$route'");
-
-    return $response->withRedirect($this->router->pathFor('404', ['domain' => $args['domain']]));
-});
