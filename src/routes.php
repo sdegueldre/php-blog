@@ -56,3 +56,7 @@ $app->get('/~{domain}/edit/{id}', function (Request $request, Response $response
         return $response->withRedirect($this->router->pathFor('404', ['domain' => $args['domain']]));
     }
 })->setName('edit');
+
+$app->get('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
+    return ($this->render)($response, 'dashboard.twig', $args);
+})->setName('dashboard');

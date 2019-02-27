@@ -1,4 +1,5 @@
 <?php
+use Slim\Http\Response;
 // DIC configuration
 
 $container = $app->getContainer();
@@ -41,8 +42,17 @@ $container['render'] = function ($c) {
     $twig = new \Twig\Environment($loader);
     $twig->addGlobal('router', $c->get('router'));
     $twig->addGlobal('session', $_SESSION);
-    
-    return function($response, $template, $args) use ($twig){
-        return $response->getBody()->write($twig->render($template, $args));
+
+    return function(Response $response, $template, $args) use ($twig){
+        $response->getBody()->write($twig->render($template, $args));
+        return $response;
+    };
+};
+
+unset($container['notFoundHandler']);
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        $response = $response->withStatus(404, "Page not found");
+        return ($c->render)($response, '404.twig', []);
     };
 };
