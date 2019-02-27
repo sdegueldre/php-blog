@@ -16,8 +16,23 @@ $container['db'] = function($c) {
     $settings = $c->get('settings')['db'];
     $connstring = '$dbType:host=$host;dbname=$dbname;user=$username;password=$password';
     $connstring = strtr($connstring, $settings);
+    $pdo = new PDO($connstring);
 
-    return new PDO($connstring);
+    return new class($pdo) {
+        private $pdo;
+        public function __construct($pdo) {
+            $this->pdo = $pdo;
+        }
+
+        public function query(string $statement, array $inputParameters){
+            $query = $this->pdo->prepare($statement);
+
+            if($query->execute($inputParameters)) {
+                return $query->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return [];
+        }
+    };
 };
 
 // view renderer
