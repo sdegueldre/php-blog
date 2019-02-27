@@ -47,6 +47,3 @@ $app->get('/~{domain}/edit/{id}', function (Request $request, Response $response
         return $response->withRedirect($this->router->pathFor('404', ['domain' => $args['domain']]));
     }
 })->setName('edit');
-
-    return ($this->renderer)($response, 'home.twig', $args);
-});

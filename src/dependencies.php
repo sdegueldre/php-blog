@@ -36,7 +36,7 @@ $container['db'] = function($c) {
 };
 
 // view renderer
-$container['renderer'] = function ($c) {
+$container['render'] = function ($c) {
     $loader = new \Twig\Loader\FilesystemLoader('../templates');
     $twig = new \Twig\Environment($loader);
     $twig->addGlobal('router', $c->get('router'));
