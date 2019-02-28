@@ -7,41 +7,43 @@ use Slim\Http\Response;
 
 $app->get('/~{domain}[/]', function (Request $request, Response $response, array $args) {
     $articles = $this->db->query('
-        SELECT *
+        SELECT id_article, title, article_date as date, content as text, username as author
         FROM articles
         INNER JOIN users
             ON articles.id_user = users.id_user
         ORDER BY article_date DESC LIMIT 5');
-    foreach ($articles as $article) {
-        $article['categories'] = [];
-    }
+    if(count($articles) > 0) {
+        foreach ($articles as &$article) {
+            $article['categories'] = array();
+        }
 
-    $selectedArticleIds = [];
-    for ($i=0; $i < 5 ; $i++) {
-        $selectedArticleIds[i] = $articles[i%count($articles)];
-    }
+        $selectedArticleIds = array();
+        for ($i=0; $i < 5 ; $i++) {
+            $selectedArticleIds[$i] = $articles[$i%count($articles)]['id_article'];
+        }
 
-    $catArticles = $this->db->query('
-        SELECT cat_art.id_article, nom_cat
-        FROM cat_art
-            INNER JOIN articles
-                ON cat_art.id_article = articles.id_article
-            INNER JOIN categories
-                ON cat_art.id_cat = categories.id_cat
-        WHERE cat_art.id_article IN (?, ?, ?, ?, ?)
-    ', $selectedArticleIds);
+        $catArticles = $this->db->query('
+            SELECT cat_art.id_article, nom_cat
+            FROM cat_art
+                INNER JOIN articles
+                    ON cat_art.id_article = articles.id_article
+                INNER JOIN categories
+                    ON cat_art.id_cat = categories.id_cat
+            WHERE cat_art.id_article IN (?, ?, ?, ?, ?)
+        ', $selectedArticleIds);
 
-    foreach ($catArticles as $catArticle) {
-        foreach ($articles as $article) {
-            if($catArticle['id_article'] == $article['id_article']){
-                array_push($article['id_article']['categories'], $catArticle['nom_cat']);
+        foreach ($catArticles as $catArticle) {
+            foreach ($articles as &$article) {
+                if($catArticle['id_article'] == $article['id_article']){
+                    array_push($article['categories'], $catArticle['nom_cat']);
+                }
             }
         }
     }
 
-    $nbArticles = $this->db->query('SELECT COUNT(*) FROM articles');
+    $nbArticles = $this->db->query('SELECT COUNT(*) FROM articles')[0]['count'];
     $categories = $this->db->query('SELECT * FROM categories');
-    $authors = $this->db->query('SELECT username FROM users WHERE permission >= 1');
+    $authors = $this->db->query('SELECT username FROM users WHERE permission >= 1')[0];
 
     $args['articles'] = $articles;
     $args['nbArticles'] = $nbArticles;
