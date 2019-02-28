@@ -5,7 +5,7 @@
 CREATE TABLE articles (
   id_article SERIAL PRIMARY KEY,
   title VARCHAR(255),
-  article_date DATE,
+  article_date TIMESTAMP,
   content TEXT,
   id_user INT
   -- join Catégorie et Commentaires
@@ -28,7 +28,7 @@ CREATE TABLE comments (
   comment_date DATE
 );
 
-CREATE TABLE category (
+CREATE TABLE categories (
   id_cat SERIAL PRIMARY KEY,
   nom_cat VARCHAR(255)
 );
