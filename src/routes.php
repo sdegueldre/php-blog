@@ -54,12 +54,45 @@ $app->get('/~{domain}[/]', function (Request $request, Response $response, array
 })->setName('home');
 
 $app->get('/~{domain}/article/{id}', function (Request $request, Response $response, array $args) {
-    $articles = $this->db->query('SELECT * FROM articles WHERE id_article = :id', array('id' => $args['id']));
-    if (count($articles) == 0) {
+
+    $article = $this->db->query('
+        SELECT title, article_date as date, content as text, username as author
+        FROM articles
+        INNER JOIN users
+            ON articles.id_user = users.id_user
+        ORDER BY article_date DESC LIMIT 5
+    ')[0];
+
+    if (count($article) == 0) {
         return ($this->notFoundHandler)($request, $response);
     }
+    $article['categories'] = array();
 
-    $args['article'] = $articles[0];
+    $catArticles = $this->db->query('
+        SELECT nom_cat
+        FROM cat_art
+            INNER JOIN articles
+                ON cat_art.id_article = articles.id_article
+            INNER JOIN categories
+                ON cat_art.id_cat = categories.id_cat
+        WHERE cat_art.id_article = ?;
+    ', array($args['id']));
+
+    foreach ($catArticles as $catArticle) {
+        array_push($article['categories'], $catArticle['nom_cat']);
+    }
+
+    $article['comments'] = $this->db->query('
+        SELECT comment_text as text, comment_date as date, username as author
+        FROM comments
+            INNER JOIN articles
+                ON comments.id_article = articles.id_article
+            INNER JOIN users
+                ON comments.id_user = users.id_user
+        WHERE comments.id_article = ?;
+    ', array($args['id']));
+
+    $args['article'] = $article;
     return ($this->render)($response, 'article.twig', $args);
 })->setName('article');
 
