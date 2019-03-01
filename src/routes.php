@@ -5,6 +5,7 @@ use Slim\Http\Response;
 
 // Routes
 
+//supply variables to the home page
 $app->get('/~{domain}[/]', function (Request $request, Response $response, array $args) {
     // Select last 5 articles with their author
     $articles = $this->db->query('
@@ -53,6 +54,7 @@ $app->get('/~{domain}[/]', function (Request $request, Response $response, array
     return ($this->render)($response, 'home.twig', $args);
 })->setName('home');
 
+//Supply variables to the article page
 $app->get('/~{domain}/article/{id}', function (Request $request, Response $response, array $args) {
     // Select article from id
     $article = $this->db->query('
@@ -108,13 +110,14 @@ $app->get('/~{domain}/signup', function (Request $request, Response $response, a
     return ($this->render)($response, 'signup.twig', $args);
 })->setName('signUp');
 
-//Page de creation d'articles
+// article creation page
 $app->get('/~{domain}/post', function (Request $request, Response $response, array $args) {
     $categories = $this->db->query('SELECT nom_cat FROM categories');
     $args['categories'] = array_map(function($v){return $v['nom_cat'];}, $categories);
     return ($this->render)($response, 'post.twig', $args);
 })->setName('post');
 
+//Supply variables to the edit page (appears when clicking on an element from the dashboard)
 $app->get('/~{domain}/edit/{id}', function (Request $request, Response $response, array $args) {
     $article = $this->db->query('
         SELECT title, article_date as date, content as text, username as author
