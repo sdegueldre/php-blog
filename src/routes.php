@@ -110,18 +110,51 @@ $app->get('/~{domain}/signup', function (Request $request, Response $response, a
 
 //Page de creation d'articles
 $app->get('/~{domain}/post', function (Request $request, Response $response, array $args) {
+    $categories = $this->db->query('SELECT nom_cat FROM categories');
+    $args['categories'] = array_map(function($v){return $v['nom_cat'];}, $categories);
     return ($this->render)($response, 'post.twig', $args);
 })->setName('post');
 
 $app->get('/~{domain}/edit/{id}', function (Request $request, Response $response, array $args) {
-    $query = false;//$this->db->query(/*Todo*/);
-    if ($article){
-        $article = $query->fetch(PDO::FETCH_ASSOC);
-        $args['article'] = $article;
-        return ($this->render)($response, 'edit.twig', $args);
-    } else {
-        return $response->withRedirect($this->router->pathFor('404', ['domain' => $args['domain']]));
+    $article = $this->db->query('
+        SELECT title, article_date as date, content as text, username as author
+        FROM articles
+        INNER JOIN users
+            ON articles.id_user = users.id_user
+        WHERE id_article = ?
+    ', [$args['id']])[0];
+    if (count($article) == 0) {
+        return ($this->notFoundHandler)($request, $response);
     }
+
+    // Add categories to the article
+    $article['categories'] = array();
+    $catArticles = $this->db->query('
+        SELECT nom_cat
+        FROM cat_art
+            INNER JOIN articles
+                ON cat_art.id_article = articles.id_article
+            INNER JOIN categories
+                ON cat_art.id_cat = categories.id_cat
+        WHERE cat_art.id_article = ?;
+    ', array($args['id']));
+    foreach ($catArticles as $catArticle) {
+        array_push($article['categories'], $catArticle['nom_cat']);
+    }
+
+    // Add comments to the article
+    $article['comments'] = $this->db->query('
+        SELECT comment_text as text, comment_date as date, username as author
+        FROM comments
+            INNER JOIN articles
+                ON comments.id_article = articles.id_article
+            INNER JOIN users
+                ON comments.id_user = users.id_user
+        WHERE comments.id_article = ?;
+    ', array($args['id']));
+
+    $args['article'] = $article;
+    return ($this->render)($response, 'edit.twig', $args);
 })->setName('edit');
 
 $app->get('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
