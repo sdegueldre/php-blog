@@ -6,6 +6,7 @@ use Slim\Http\Response;
 // Routes
 
 $app->get('/~{domain}[/]', function (Request $request, Response $response, array $args) {
+    // Select last 5 articles with their author
     $articles = $this->db->query('
         SELECT id_article, title, article_date as date, content as text, username as author
         FROM articles
@@ -13,15 +14,11 @@ $app->get('/~{domain}[/]', function (Request $request, Response $response, array
             ON articles.id_user = users.id_user
         ORDER BY article_date DESC LIMIT 5');
     if(count($articles) > 0) {
-        foreach ($articles as &$article) {
-            $article['categories'] = array();
-        }
-
+        // Add categories to the articles
         $selectedArticleIds = array();
         for ($i=0; $i < 5 ; $i++) {
             $selectedArticleIds[$i] = $articles[$i%count($articles)]['id_article'];
         }
-
         $catArticles = $this->db->query('
             SELECT cat_art.id_article, nom_cat
             FROM cat_art
@@ -32,6 +29,9 @@ $app->get('/~{domain}[/]', function (Request $request, Response $response, array
             WHERE cat_art.id_article IN (?, ?, ?, ?, ?)
         ', $selectedArticleIds);
 
+        foreach ($articles as &$article) {
+            $article['categories'] = array();
+        }
         foreach ($catArticles as $catArticle) {
             foreach ($articles as &$article) {
                 if($catArticle['id_article'] == $article['id_article']){
@@ -54,20 +54,20 @@ $app->get('/~{domain}[/]', function (Request $request, Response $response, array
 })->setName('home');
 
 $app->get('/~{domain}/article/{id}', function (Request $request, Response $response, array $args) {
-
+    // Select article from id
     $article = $this->db->query('
         SELECT title, article_date as date, content as text, username as author
         FROM articles
         INNER JOIN users
             ON articles.id_user = users.id_user
-        ORDER BY article_date DESC LIMIT 5
-    ')[0];
-
+        WHERE id_article = ?
+    ', [$args['id']])[0];
     if (count($article) == 0) {
         return ($this->notFoundHandler)($request, $response);
     }
-    $article['categories'] = array();
 
+    // Add categories to the article
+    $article['categories'] = array();
     $catArticles = $this->db->query('
         SELECT nom_cat
         FROM cat_art
@@ -77,11 +77,11 @@ $app->get('/~{domain}/article/{id}', function (Request $request, Response $respo
                 ON cat_art.id_cat = categories.id_cat
         WHERE cat_art.id_article = ?;
     ', array($args['id']));
-
     foreach ($catArticles as $catArticle) {
         array_push($article['categories'], $catArticle['nom_cat']);
     }
 
+    // Add comments to the article
     $article['comments'] = $this->db->query('
         SELECT comment_text as text, comment_date as date, username as author
         FROM comments
@@ -104,8 +104,8 @@ $app->get('/~{domain}/login', function (Request $request, Response $response, ar
     return ($this->render)($response, 'login.twig', $args);
 })->setName('login');
 
-$app->get('/~{domain}/signUp', function (Request $request, Response $response, array $args) {
-    return ($this->render)($response, 'signUp.twig', $args);
+$app->get('/~{domain}/signup', function (Request $request, Response $response, array $args) {
+    return ($this->render)($response, 'signup.twig', $args);
 })->setName('signUp');
 
 //Page de creation d'articles
