@@ -157,6 +157,37 @@ $app->get('/~{domain}/edit/{id}', function (Request $request, Response $response
     return ($this->render)($response, 'edit.twig', $args);
 })->setName('edit');
 
+
+//Supply variables for dashboard
 $app->get('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
+    $articles = $this->db->query('
+        SELECT title, id_article, username as author
+        FROM articles
+            INNER JOIN users
+                ON articles.id_user = users.id_user;
+    ');
+
+    $catArticles = $this->db->query('
+        SELECT nom_cat, articles.id_article
+        FROM cat_art
+            INNER JOIN articles
+                ON cat_art.id_article = articles.id_article
+            INNER JOIN categories
+                ON cat_art.id_cat = categories.id_cat;
+        ');
+
+    foreach ($articles as &$article) {
+        $article['categories'] = array();
+    }
+    foreach ($catArticles as $catArticle) {
+        foreach ($articles as &$article) {
+            if($catArticle['id_article'] == $article['id_article']){
+                array_push($article['categories'], $catArticle['nom_cat']);
+            }
+        }
+    }
+
+    $args['articles'] = $articles;
+
     return ($this->render)($response, 'dashboard.twig', $args);
 })->setName('dashboard');
