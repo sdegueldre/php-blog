@@ -16,6 +16,7 @@ $app->get('/~{domain}[/]', function (Request $request, Response $response, array
     $args['nbArticles'] = $nbArticles;
     $args['categories'] = $categories;
     $args['authors'] = $authors;
+    $args['route'] = 'home';
     return ($this->render)($response, 'home.twig', $args);
 })->setName('home');
 
@@ -34,15 +35,18 @@ $app->get('/~{domain}/404', function (Request $request, Response $response, arra
 })->setName('404');
 
 $app->get('/~{domain}/login', function (Request $request, Response $response, array $args) {
+    $args['route'] = 'login';
     return ($this->render)($response, 'login.twig', $args);
 })->setName('login');
 
-$app->get('/~{domain}/signUp', function (Request $request, Response $response, array $args) {
-    return ($this->render)($response, 'signUp.twig', $args);
-})->setName('signUp');
+$app->get('/~{domain}/signup', function (Request $request, Response $response, array $args) {
+    $args['route'] = 'signup';
+    return ($this->render)($response, 'signup.twig', $args);
+})->setName('signup');
 
 //Page de creation d'articles
 $app->get('/~{domain}/post', function (Request $request, Response $response, array $args) {
+    $args['route'] = 'post';
     return ($this->render)($response, 'post.twig', $args);
 })->setName('post');
 
@@ -58,5 +62,6 @@ $app->get('/~{domain}/edit/{id}', function (Request $request, Response $response
 })->setName('edit');
 
 $app->get('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
+    $args['route'] = 'dashboard';
     return ($this->render)($response, 'dashboard.twig', $args);
 })->setName('dashboard');

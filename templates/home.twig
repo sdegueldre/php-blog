@@ -1,11 +1,8 @@
 {% extends 'common.twig' %}
 
 {% block content %}
-  <h1>CRUD application home page</h1>
   {% for user in users %}
-    <div class="">
-      <p>username: {{ user.username }}</p>
-      <p>email: {{ user.email }}</p>
-    </div>
+    <h2>{{ user.username }}</h2>  
+    <p>email: {{ user.email }}</p>
   {% endfor %}
 {% endblock %}

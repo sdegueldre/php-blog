@@ -1,215 +1,114 @@
-// Slate 4.3.1
+// Lumen 4.3.1
 // Bootswatch
 
 
 // Variables ===================================================================
 
-@mixin btn-shadow($color){
-  @include gradient-y-three-colors(lighten($color, 6%), $color, 60%, darken($color, 4%));
-  filter: none;
-}
+$web-font-path: "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic" !default;
+@import url($web-font-path);
 
-@mixin btn-shadow-inverse($color){
-  @include gradient-y-three-colors(darken($color, 18%), darken($color, 15%), 40%, darken($color, 13%));
-  filter: none;
+@mixin shadow($width: 4px){
+  border-style: solid;
+  border-width: 0 1px $width 1px;
 }
 
 // Navbar ======================================================================
 
 .navbar {
-  border: 1px solid rgba(0, 0, 0, 0.6);
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-
-  .container {
-    padding: 0;
-  }
-
-  .navbar-toggler {
-    border-color: rgba(0, 0, 0, 0.6);
-  }
-
-  &-fixed-top {
-    border-width: 0 0 1px 0;
-  }
-
-  &-fixed-bottom {
-    border-width: 1px 0 0 0;
-  }
-
-  .nav-link {
-    padding: 1rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
-
-    &:hover,
-    &:focus {
-      @include btn-shadow-inverse($gray-800);
-      border-left: 1px solid rgba(0, 0, 0, 0.2);
-    }
-  }
-
-  &-brand {
-    padding: 0.75rem 1rem calc(54px - 0.75rem - 30px);
-    margin-right: 0;
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
-  }
-
-  .nav-item.active .nav-link {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-left: 1px solid rgba(0, 0, 0, 0.2);
-  }
-
-  &-nav .nav-item + .nav-item {
-    margin-left: 0;
-  }
-
-  &.bg-light {
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-
-    .nav-link {
-      &:hover,
-      &:focus {
-        @include btn-shadow-inverse($gray-600);
-        border-left: 1px solid rgba(0, 0, 0, 0.2);
-      }
-    }
-  }
+  @include shadow();
 }
 
-@media (max-width: 576px) {
-  .navbar-expand-sm {
-    .navbar-brand,
-    .nav-link {
-      border: none !important;
-    }
-  }
+.bg-primary {
+  border-color: darken($primary, 5%);
 }
 
-@media (max-width: 768px) {
-  .navbar-expand-md {
-    .navbar-brand,
-    .nav-link {
-      border: none !important;
-    }
-  }
+.bg-dark {
+  border-color: darken($dark, 5%);
 }
 
-@media (max-width: 992px) {
-  .navbar-expand-lg {
-    .navbar-brand,
-    .nav-link {
-      border: none !important;
-    }
-  }
+.bg-light {
+  background-color: #fff !important;
+  border-color: darken(#fff, 5%);
 }
 
 // Buttons =====================================================================
 
 .btn {
-  border-color: rgba(0, 0, 0, 0.6);
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  @include shadow();
+  text-transform: uppercase;
 
-  &:not([disabled]):not(.disabled).active,
-  &.disabled {
-    border-color: rgba(0, 0, 0, 0.6);
-    box-shadow: none;
+  &:not(.disabled):hover {
+    margin-top: 1px;
+    border-bottom-width: 3px;
   }
 
-  &:hover,
-  &:focus,
-  &:not([disabled]):not(.disabled):active,
-  &:not([disabled]):not(.disabled):active:hover,
-  &:not([disabled]):not(.disabled).active:hover {
-    border-color: rgba(0, 0, 0, 0.6);
+  &:not(.disabled):active {
+    margin-top: 2px;
+    border-bottom-width: 2px;
+    @include box-shadow(none);
   }
 }
 
-.btn-primary {
-  @include btn-shadow($primary);
+[class*="btn-outline"] {
+  border-top-width: 1px;
+}
 
-  &:not([disabled]):not(.disabled):hover,
-  &:not([disabled]):not(.disabled):focus,
-  &:not([disabled]):not(.disabled):active:hover,
-  &:not([disabled]):not(.disabled).active:hover {
-    @include btn-shadow-inverse($primary);
+.btn {
+  &-primary {
+    border-color: darken($primary, 5%);
+  }
+
+  &-secondary {
+    border-color: darken($secondary, 5%);
+  }
+
+  &-success {
+    border-color: darken($success, 5%);
+  }
+
+  &-info {
+    border-color: darken($info, 5%);
+  }
+
+  &-danger {
+    border-color: darken($danger, 5%);
+  }
+
+  &-warning {
+    border-color: darken($warning, 5%);
+  }
+
+  &-light {
+    border-color: darken($light, 5%);
+  }
+
+  &-dark {
+    border-color: darken($dark, 5%);
   }
 }
 
-.btn-secondary {
-  @include btn-shadow($secondary);
-
-  &:not([disabled]):not(.disabled):hover,
-  &:not([disabled]):not(.disabled):focus,
-  &:not([disabled]):not(.disabled):active,
-  &:not([disabled]):not(.disabled).active {
-    @include btn-shadow-inverse($secondary);
-  }
-}
-
-.btn-success {
-  @include btn-shadow($success);
-  color: $white;
-
-  &:not([disabled]):not(.disabled):hover,
-  &:not([disabled]):not(.disabled):focus,
-  &:not([disabled]):not(.disabled):active,
-  &:not([disabled]):not(.disabled).active {
-    @include btn-shadow-inverse($success);
-  }
-}
-
-.btn-info {
-  @include btn-shadow($info);
-  color: $white;
-
-  &:not([disabled]):not(.disabled):hover,
-  &:not([disabled]):not(.disabled):focus,
-  &:not([disabled]):not(.disabled):active,
-  &:not([disabled]):not(.disabled).active {
-    @include btn-shadow-inverse($info);
-  }
-}
-
-.btn-warning {
-  @include btn-shadow($warning);
-  color: $white;
-
-  &:not([disabled]):not(.disabled):hover,
-  &:not([disabled]):not(.disabled):focus,
-  &:not([disabled]):not(.disabled):active,
-  &:not([disabled]):not(.disabled).active {
-    @include btn-shadow-inverse($warning);
-  }
-}
-
-.btn-danger {
-  @include btn-shadow($danger);
-
-  &:not([disabled]):not(.disabled):hover,
-  &:not([disabled]):not(.disabled):focus,
-  &:not([disabled]):not(.disabled):active,
-  &:not([disabled]):not(.disabled).active {
-    @include btn-shadow-inverse($danger);
-  }
-}
-
-.btn-link,
-.btn-link:hover {
-  border-color: transparent;
-}
-
-.btn-group,
 .btn-group-vertical {
+  .btn + .btn {
+    &:hover {
+      margin-top: -1px;
+      border-top-width: 1px;
+    }
 
-  .btn.active {
-    border-color: rgba(0, 0, 0, 0.6);
+    &:active {
+      margin-top: -1px;
+      border-top-width: 2px;
+    }
   }
 }
 
 // Typography ==================================================================
 
-h1, h2, h3, h4, h5, h6 {
-  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+.text-secondary {
+  color: $gray-700 !important;
+}
+
+.blockquote-footer {
+  color: $gray-600;
 }
 
 // Tables ======================================================================
@@ -217,7 +116,6 @@ h1, h2, h3, h4, h5, h6 {
 .table {
 
   &-primary,
-  &-secondary,
   &-success,
   &-info,
   &-warning,
@@ -340,125 +238,198 @@ h1, h2, h3, h4, h5, h6 {
 
 // Forms =======================================================================
 
-legend {
-  color: #fff;
+.form-control {
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.075);
 }
 
-.input-group-addon {
-  @include btn-shadow($secondary);
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-  color: $white;
+.input-group-sm {
+  > .input-group-prepend,
+  > .input-group-append {
+    .btn {
+      font-size: $btn-font-size-sm;
+    }
+  }
 }
 
 // Navs ========================================================================
 
-.nav-tabs {
-
-  .nav-link,
-  .nav-link:hover {
-    color: #fff;
+.nav {
+  .open > a,
+  .open > a:hover,
+  .open > a:focus {
+    border-color: transparent;
   }
 }
 
-.nav-pills {
+.nav-tabs {
 
   .nav-link {
-    @include btn-shadow($gray-800);
-    border: 1px solid rgba(0, 0, 0, 0.6);
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-    color: #fff;
+    color: $body-color;
 
-    &:hover {
-      @include btn-shadow-inverse($gray-800);
-      border: 1px solid rgba(0, 0, 0, 0.6);
+    &,
+    &.disabled,
+    &.disabled:hover,
+    &.disabled:focus {
+      margin-top: 6px;
+      border-color: $nav-tabs-border-color;
+      transition: all 0.2s ease-in-out;
+    }
+
+    &:not(.disabled):hover,
+    &:not(.disabled):focus,
+    &.active {
+      padding-bottom: calc(0.5em + 6px);
+      border-bottom-color: transparent;
+      margin-top: 0;
     }
   }
 
-  .nav-link.active,
-  .nav-link:hover {
-    background-color: transparent;
-    @include btn-shadow-inverse($gray-800);
-    border: 1px solid rgba(0, 0, 0, 0.6);
+  &.nav-justified > li {
+    vertical-align: bottom;
   }
+}
 
-  .nav-link.disabled,
-  .nav-link.disabled:hover {
-    @include btn-shadow($gray-800);
-    color: $nav-link-disabled-color;
-  }
+.dropdown-menu {
+  margin-top: 0;
+  @include shadow();
+  border-top-width: 1px;
+  @include box-shadow(none);
+}
+
+.breadcrumb {
+  border-color: darken($breadcrumb-bg, 5%);
+  @include shadow();
 }
 
 .pagination {
 
-  .page-link {
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-    @include btn-shadow($gray-800);
+  > li > a,
+  > li > span {
+    position: relative;
+    top: 0;
+    @include shadow();
+    color: $pagination-color;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
 
-    &:hover {
-      @include btn-shadow-inverse($gray-800);
+    &:hover,
+    &:focus {
+      top: 1px;
+      border-bottom-width: 3px;
       text-decoration: none;
+    }
+
+    &:active {
+      top: 2px;
+      border-bottom-width: 2px;
     }
   }
 
-  .page-item.active .page-link {
-    @include btn-shadow-inverse($gray-800);
-  }
+  > .disabled > a,
+  > .disabled > span {
 
-  .page-item.disabled .page-link {
-    @include btn-shadow($gray-800);
+    &:hover {
+      top: 0;
+      @include shadow();
+    }
+
+    &:active {
+      top: 0;
+      @include shadow();
+    }
   }
 }
 
-.breadcrumb {
-  border: 1px solid rgba(0, 0, 0, 0.6);
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-  background-color: transparent;
-  @include btn-shadow($gray-800);
+.pager {
 
-  a,
-  a:hover {
-    color: #fff;
+  > li > a,
+  > li > span,
+  > .disabled > a,
+  > .disabled > span {
+
+    &,
+    &:hover,
+    &:active {
+      border-left-width: 2px;
+      border-right-width: 2px;
+    }
   }
 }
 
 // Indicators ==================================================================
 
-.alert {
+.close {
+  text-decoration: none;
+  opacity: 0.4;
 
-  .close {
-    color: $close-color;
-    text-decoration: none;
+  &:hover,
+  &:focus {
+    opacity: 1;
   }
 }
 
 .alert {
-  border: none;
   color: $white;
+  @include shadow();
 
-  a,
+  &-primary {
+    background-color: $primary;
+    border-color: darken($primary, 5%);
+  }
+
+  &-secondary {
+    background-color: $secondary;
+    border-color: darken($secondary, 5%);
+  }
+
+  &-success {
+    background-color: $success;
+    border-color: darken($success, 5%);
+  }
+
+  &-info {
+    background-color: $info;
+    border-color: darken($info, 5%);
+  }
+
+  &-danger {
+    background-color: $danger;
+    border-color: darken($danger, 5%);
+  }
+
+  &-warning {
+    background-color: $warning;
+    border-color: darken($warning, 5%);
+  }
+
+  &-dark {
+    background-color: $dark;
+    border-color: darken($dark, 5%);
+  }
+
+  &-light {
+    background-color: $light;
+    border-color: darken($light, 5%);
+  }
+
   .alert-link {
+    font-weight: normal;
     color: #fff;
     text-decoration: underline;
   }
 
-  @each $color, $value in $theme-colors {
-    &-#{$color} {
-      background-color: $value;
-    }
-  }
-
+  &-secondary,
   &-light {
     &,
-    & a:not(.btn),
+    & a,
     & .alert-link {
-      color: $body-bg;
+      color: $body-color;
     }
   }
 }
 
 .badge {
-
-  &-success,
   &-warning,
   &-info {
     color: $white;
@@ -469,13 +440,55 @@ legend {
 
 // Containers ==================================================================
 
-.jumbotron {
-  border: 1px solid rgba(0, 0, 0, 0.6);
+a.list-group-item {
+
+  &-success {
+    &.active {
+      background-color: $success;
+    }
+
+    &.active:hover,
+    &.active:focus {
+      background-color: darken($success, 5%);
+    }
+  }
+
+  &-warning {
+    &.active {
+      background-color: $warning;
+    }
+    
+    &.active:hover,
+    &.active:focus {
+      background-color: darken($warning, 5%);
+    }
+  }
+
+  &-danger {
+    &.active {
+      background-color: $danger;
+    }
+    
+    &.active:hover,
+    &.active:focus {
+      background-color: darken($danger, 5%);
+    }
+  }
 }
 
-.list-group {
+.jumbotron {
+  border: 1px solid $gray-200;
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.05);
+}
 
-  &-item:hover {
-    background-color: darken($gray-900, 5%);
+.modal {
+
+  .close {
+    color: $black;
+
+    &:not(:disabled):not(.disabled):hover,
+    &:not(:disabled):not(.disabled):focus {
+      color: $black;
+    }
   }
 }

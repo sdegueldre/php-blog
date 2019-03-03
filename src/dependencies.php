@@ -38,10 +38,12 @@ $container['db'] = function($c) {
 
 // view renderer
 $container['render'] = function ($c) {
-    $loader = new \Twig\Loader\FilesystemLoader('../templates');
-    $twig = new \Twig\Environment($loader);
+    $settings = $c->get('settings')['twig'];
+    $loader = new \Twig\Loader\FilesystemLoader($settings['templateDir']);
+    $twig = new \Twig\Environment($loader, $settings['envSettings']);
     $twig->addGlobal('router', $c->get('router'));
     $twig->addGlobal('session', $_SESSION);
+    $twig->addGlobal('navItems', $settings['navbar']);
 
     return function(Response $response, $template, $args) use ($twig){
         $response->getBody()->write($twig->render($template, $args));

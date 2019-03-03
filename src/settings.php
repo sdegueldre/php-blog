@@ -26,6 +26,14 @@ return [
             'envSettings' => [
 
             ],
+            // display name => route name
+            'navbar' => [
+                'home' => 'Blog',
+                'login' => 'Log in',
+                'signup' => 'Sign up',
+                'post' => 'New article',
+                'dashboard' => 'Dashboard',
+            ],
         ],
     ],
 ];
