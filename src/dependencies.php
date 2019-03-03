@@ -25,7 +25,7 @@ $container['db'] = function($c) {
             $this->pdo = $pdo;
         }
 
-        public function query(string $statement, array $inputParameters){
+        public function query(string $statement, array $inputParameters = []){
             $query = $this->pdo->prepare($statement);
 
             if($query->execute($inputParameters)) {
