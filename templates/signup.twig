@@ -1,4 +1,37 @@
 {% extends 'common.twig' %}
 
 {% block content %}
+  <div class="container login-form py-5">
+    <div class="card form-container mr-auto ml-auto">
+      <div class="card-header">
+        <h4 class="my-0">Register</h4>
+      </div>
+      <div class="card-body">
+        <form action="{{ router.pathFor('signup', {'domain':domain}) }}" method="post" class="d-flex flex-column">
+          <div class="form-group">
+            <label for="usernameInput">Username</label>
+            <input type="text" name="username" class="form-control" id="usernameInput" aria-describedby="usernameHelp" placeholder="Username" required>
+            <small id="usernameHelp" class="form-text text-muted">Your publically displayed user name.</small>
+          </div>
+          <div class="form-group">
+            <label for="emailInput">Email address</label>
+            <input type="email" name="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="E-mail" required>
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" required>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Confirm password" required>
+          </div>
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="ToSCheck" required>
+            <label class="form-check-label" for="ToSCheck">I accept the Terms of Use</label>
+          </div>
+          <button type="submit" class="btn btn-primary float-right">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
 {% endblock %}
