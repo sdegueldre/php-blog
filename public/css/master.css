@@ -7319,3 +7319,6 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
   color: #000; }
   .modal .close:not(:disabled):not(.disabled):hover, .modal .close:not(:disabled):not(.disabled):focus {
     color: #000; }
+
+.login-form {
+  max-width: 500px; }

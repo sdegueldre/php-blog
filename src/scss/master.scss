@@ -1,3 +1,7 @@
 @import "_variables.scss";
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "_bootswatch.scss";
+
+.login-form {
+  max-width: 500px;
+}
