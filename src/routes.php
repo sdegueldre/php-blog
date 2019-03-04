@@ -44,7 +44,7 @@ $app->get('/~{domain}[/]', function (Request $request, Response $response, array
 
     $nbArticles = $this->db->query('SELECT COUNT(*) FROM articles')[0]['count'];
     $categories = $this->db->query('SELECT * FROM categories');
-    $authors = $this->db->query('SELECT username FROM users WHERE permission >= 1')[0];
+    $authors = $this->db->query('SELECT username FROM users WHERE permission >= 1');
 
     $args['articles'] = $articles;
     $args['nbArticles'] = $nbArticles;
@@ -198,3 +198,23 @@ $app->get('/~{domain}/dashboard', function (Request $request, Response $response
     $args['route'] = 'dashboard';
     return ($this->render)($response, 'dashboard.twig', $args);
 })->setName('dashboard');
+
+// Post Routes
+$app->post('/~{domain}/signup', function (Request $request, Response $response, array $args) {
+    $params = $request->getParsedBody();
+    $username = $params['username'];
+    $email =  $params['email'];
+    $password_hash = password_hash($params['password'], PASSWORD_DEFAULT);
+
+    $registered = $this->db->query('
+        INSERT INTO users (username, email, hash_pass)
+        VALUES (:username, :email, :password_hash)', [
+            ':username' => $username,
+            ':email' => $email,
+            ':password_hash' => $password_hash,
+    ]);
+
+    $args['route'] = 'signup';
+    $args['registered'] = $registered;
+    return ($this->render)($response, 'signup.twig', $args);
+})->setName('signup');

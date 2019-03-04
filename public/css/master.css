@@ -7322,3 +7322,6 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
 
 .card-form {
   max-width: 500px; }
+
+.alert {
+  left: unset; }
