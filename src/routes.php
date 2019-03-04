@@ -215,6 +215,11 @@ $app->post('/~{domain}/signup', function (Request $request, Response $response, 
     ]);
 
     $args['route'] = 'signup';
-    $args['registered'] = $registered;
+    $args['alerts'] = array([
+        'type' => $registered ? 'success' : 'danger',
+        'message' => $registered ?
+            'You have registered successfully!' :
+            'Something went wrong and we couldn\'t register you.'
+    ]);
     return ($this->render)($response, 'signup.twig', $args);
 })->setName('signup');
