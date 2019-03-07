@@ -1,4 +1,17 @@
 {% extends 'common.twig' %}
 
 {% block content %}
+  <h2>Article list:</h2>
+  {% for article in articles %}
+    <p><strong>{{ article.title }}</strong> by {{ article.author }} on {{ article.date|date("F jS, Y") }}</p>
+    <p>
+      {% for category in article.categories %}
+        {{ category }} 
+      {% endfor %}
+    </p>
+  {% endfor %}
+  <h2>Category list:</h2>
+  {% for category in categories %}
+      <p>{{ category }}</p>
+  {% endfor %}
 {% endblock %}

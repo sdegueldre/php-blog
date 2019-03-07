@@ -1,0 +1,18 @@
+{% extends 'common.twig' %}
+
+{% block content %}
+  <div class="jumbotron my-5">
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.text|nl2br }}</p>
+    <p>
+      {% for category in article.categories %}
+          {{ category }},
+      {% endfor %}
+    </p>
+    <p>by {{ article.author }} on {{ article.date|date("F jS, Y") }}</p>
+    {% for comment in article.comments %}
+        <p><strong>{{ comment.author }}</strong> on {{ comment.date|date("F jS, Y") }}</p>
+        <p>{{ comment.text }}</p>
+    {% endfor %}
+  </div>
+{% endblock %}
