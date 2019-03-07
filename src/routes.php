@@ -219,7 +219,7 @@ $app->post('/~{domain}/signup', function (Request $request, Response $response, 
         'type' => $registered ? 'success' : 'danger',
         'message' => $registered ?
             'You have registered successfully!' :
-            'Something went wrong and we couldn\'t register you.'
+            'This email address is already in use.'
     ]);
     return ($this->render)($response, 'signup.twig', $args);
 })->setName('signup');
