@@ -200,6 +200,13 @@ $app->get('/~{domain}/dashboard', function (Request $request, Response $response
     return ($this->render)($response, 'dashboard.twig', $args);
 })->setName('dashboard');
 
+$app->get('/~{domain}/logout', function (Request $request, Response $response, array $args) {
+    session_destroy();
+    session_start();
+
+    return $response->withRedirect($this->router->pathFor('login', ['domain' => $args['domain']]));
+});
+
 // Post Routes
 $app->post('/~{domain}/signup', function (Request $request, Response $response, array $args) {
     $params = $request->getParsedBody();
@@ -216,11 +223,27 @@ $app->post('/~{domain}/signup', function (Request $request, Response $response, 
     ]);
 
     $args['route'] = 'signup';
-    $args['alerts'] = array([
+    $_SESSION['alerts'] = array([
         'type' => $registered ? 'success' : 'danger',
         'message' => $registered ?
             'You have registered successfully!' :
             'This email address is already in use.'
     ]);
     return ($this->render)($response, 'signup.twig', $args);
-})->setName('signup');
+});
+
+$app->post('/~{domain}/login', function (Request $request, Response $response, array $args) {
+    $user = $request->getParsedBody();
+    $username = $user['username'];
+
+    $result = $this->db->query("SELECT password_hash, permissions from users WHERE username = :username", [
+        'username' => $username
+    ])[0];
+    $password_hash = $result['password_hash'];
+
+    if(password_verify($user['password'], $password_hash)) {
+      $_SESSION['username'] = $username;
+      $_SESSION['permissions'] = $result['permissions'];
+    }
+    return ($this->render)($response, 'login.twig', $args);
+});
