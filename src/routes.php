@@ -208,6 +208,7 @@ $app->get('/~{domain}/logout', function (Request $request, Response $response, a
 });
 
 // Post Routes
+
 $app->post('/~{domain}/signup', function (Request $request, Response $response, array $args) {
     $params = $request->getParsedBody();
     $username = $params['username'];
@@ -237,7 +238,7 @@ $app->post('/~{domain}/login', function (Request $request, Response $response, a
     $username = $user['username'];
     $args['route'] = 'login';
 
-    $result = $this->db->query("SELECT password_hash, permissions from users WHERE username = :username", [
+    $result = $this->db->query("SELECT password_hash, permissions, id from users WHERE username = :username", [
         'username' => $username
     ])[0];
     if(count($result) == 0){
@@ -249,9 +250,49 @@ $app->post('/~{domain}/login', function (Request $request, Response $response, a
     if(password_verify($user['password'], $password_hash)) {
       $_SESSION['username'] = $username;
       $_SESSION['permissions'] = $result['permissions'];
+      $_SESSION['userID'] = $result['id'];
       $args['status'] = 'success';
   } else {
       $args['status'] = 'wrongPassword';
   }
     return ($this->render)($response, 'login.twig', $args);
 });
+
+
+$app->post('/~{domain}/post', function(Request $request, Response $response, array $args) {
+    if ($_SESSION['permissions'] < 1) {
+        return response withStatus(401)
+    }
+
+    $article = $request->getParsedBody();
+
+    $title = $article['title'];
+    $text = $article['text'];
+    $authorID = $_SESSION['userID'];
+    $categoriesID = $article['categories'];
+
+    $articleID = $this->$db->query('
+        INSERT INTO articles (title, text, author_id)
+        VALUES (:title, :text, :author_id)
+        RETURNING id', [
+            ':title' => $title,
+            ':text' => $text,
+            ':author_id' => $authorID,
+    ])[0]['id'];
+
+    foreach($categoriesID as $categoryID) {
+        $status = $this->$db->query('
+            INSERT INTO cat_art (article_id, category_id)
+            VALUES (:articleID, categoryID)', array[
+                ':articleID' = $articleID,
+                ':categoryID' = $categoryID,
+        ]);
+    }
+
+    $_SESSION['alerts'] = array([
+        'type' => $articleID ? 'success' : 'danger',
+        'message' => $articleID ?
+            'You have successfully posted your article' :
+            'You should fill every field in this form'
+    ]);
+};
