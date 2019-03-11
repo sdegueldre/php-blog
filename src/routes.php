@@ -114,7 +114,7 @@ $app->get('/~{domain}/signup', function (Request $request, Response $response, a
 
 // article creation page
 $app->get('/~{domain}/post', function (Request $request, Response $response, array $args) {
-    $categories = $this->db->query('SELECT nom_cat FROM categories');
+    $categories = $this->db->query('SELECT name FROM categories');
     $args['categories'] = array_map(function($v){return $v['name'];}, $categories);
     $args['route'] = 'post';
     return ($this->render)($response, 'post.twig', $args);
@@ -235,15 +235,23 @@ $app->post('/~{domain}/signup', function (Request $request, Response $response, 
 $app->post('/~{domain}/login', function (Request $request, Response $response, array $args) {
     $user = $request->getParsedBody();
     $username = $user['username'];
+    $args['route'] = 'login';
 
     $result = $this->db->query("SELECT password_hash, permissions from users WHERE username = :username", [
         'username' => $username
     ])[0];
+    if(count($result) == 0){
+        $args['status'] = 'userNotFound';
+        return ($this->render)($response, 'login.twig', $args);
+    }
     $password_hash = $result['password_hash'];
 
     if(password_verify($user['password'], $password_hash)) {
       $_SESSION['username'] = $username;
       $_SESSION['permissions'] = $result['permissions'];
-    }
+      $args['status'] = 'success';
+  } else {
+      $args['status'] = 'wrongPassword';
+  }
     return ($this->render)($response, 'login.twig', $args);
 });

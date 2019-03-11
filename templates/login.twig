@@ -25,9 +25,10 @@
             <p class="text-success my-0">You have successfully logged in!</p>
           {% elseif session.username %}
             <p class="text-muted my-0">You are already logged in.</p>
-          {% endif %}
-          {% if status == 'failure' %}
+          {% elseif status == 'wrongPassword' %}
             <p class="text-danger pt-3 my-0">Incorrect password, please try again</p>
+          {% elseif status == 'userNotFound' %}
+            <p class="text-danger pt-3 my-0">This user does not exist, have you signed up?</p>
           {% endif %}
         </div>
       </div>
