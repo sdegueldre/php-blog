@@ -95,6 +95,7 @@ $app->get('/~{domain}/article/{id}', function (Request $request, Response $respo
     ', array($args['id']));
 
     $args['article'] = $article;
+    $args['route'] = 'article';
     return ($this->render)($response, 'article.twig', $args);
 })->setName('article');
 
