@@ -261,7 +261,7 @@ $app->post('/~{domain}/login', function (Request $request, Response $response, a
 
 $app->post('/~{domain}/post', function(Request $request, Response $response, array $args) {
     if ($_SESSION['permissions'] < 1) {
-        return response withStatus(401)
+        return $response->withStatus(401);
     }
 
     $article = $request->getParsedBody();
@@ -283,10 +283,12 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
     foreach($categoriesID as $categoryID) {
         $status = $this->$db->query('
             INSERT INTO cat_art (article_id, category_id)
-            VALUES (:articleID, categoryID)', array[
-                ':articleID' = $articleID,
-                ':categoryID' = $categoryID,
-        ]);
+            VALUES (:articleID, :categoryID)',
+            array(
+                ':articleID' => $articleID,
+                ':categoryID' => $categoryID,
+              )
+            );
     }
 
     $_SESSION['alerts'] = array([
@@ -295,4 +297,4 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
             'You have successfully posted your article' :
             'You should fill every field in this form'
     ]);
-};
+});
