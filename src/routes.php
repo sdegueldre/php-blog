@@ -63,7 +63,7 @@ $app->get('/~{domain}/article/{id}', function (Request $request, Response $respo
         INNER JOIN users
             ON articles.author_id = users.id
         WHERE articles.id = ?
-    ', [$args['id']])[0];
+    ', array($args['id']))[0];
     if (count($article) == 0) {
         return ($this->notFoundHandler)($request, $response);
     }
@@ -288,8 +288,8 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
             array(
                 ':articleID' => $articleID,
                 ':categoryID' => $categoryID,
-              )
-            );
+            )
+        );
     }
 
     $_SESSION['alerts'] = array([
@@ -298,4 +298,34 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
             'You have successfully posted your article' :
             'You should fill every field in this form'
     ]);
+
+    return ($this->render)($response, 'post.twig', $args);
 });
+
+//
+$app->post('/~{domain}/article/{id}', function (Request $request, Response $response, array $args) {
+    if (!isset($_SESSION['permission'])) {
+        return $response->withStatus(401);
+    }
+
+    $comment = $request->getParsedBody();
+    $permission = $_SESSION['permission'];
+    $authorID = $_SESSION['userID'];
+    $articleID = $args['id'];
+    $text = $comment['text'];
+
+    $insertComment = $this->$db->query('
+        INSERT INTO comments (article_id, author_id, text)
+        VALUES (:article_id, :author_id, :text)',
+        array(
+            ':article_id' => $articleID,
+            ':author_id' => $authorID,
+            ':text' => $text,
+        )
+    );
+
+    return $response->withRedirect($this->router->pathFor('article/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
+});
+
+// $app->post('/~{domain}/edit/{id}', function (Request $request, Response $response, array $args) {
+// };
