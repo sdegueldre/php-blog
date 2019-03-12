@@ -27,5 +27,7 @@
     "jquery": "^3.3.1",
     "popper.js": "^1.14.7"
   },
-  "dependencies": {}
+  "dependencies": {
+    "startbootstrap-blog-home": "^4.1.2"
+  }
 }

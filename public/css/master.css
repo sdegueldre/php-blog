@@ -7320,9 +7320,13 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
   .modal .close:not(:disabled):not(.disabled):hover, .modal .close:not(:disabled):not(.disabled):focus {
     color: #000; }
 
-.card-form {
-  max-width: 500px; }
+/*.card-form {
+  max-width: 500px;
+}
 
 .alert-container {
   left: unset;
-  width: 300px; }
+  width: 300px;
+}*/
+h1 {
+  padding-top: 50px; }

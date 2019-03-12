@@ -1,18 +1,20 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-primary">
-  <a class="navbar-brand" href="#">Farts & Dabs</a>
-  {% if session.username is defined %}
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Farts & Dabs</a>
+    {% if session.username is defined %}
     <div class="navbar-text d-md-none ml-auto mr-3">
       Currently logged in as
       <a href="#">{{ session.username }}</a>
     </div>
   {% endif %}
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar  " aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbar">
-    <ul class="navbar-nav mr-auto">
-      {% for itemRoute, itemName in navItems %}
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        {% for itemRoute, itemName in navItems %}
         <li class="nav-item {% if itemRoute == route %}active{% endif %}">
           <a class="nav-link" href="{{ router.pathFor(itemRoute, {'domain':domain}) }}">
             {{ itemName }}
@@ -22,12 +24,13 @@
           </a>
         </li>
       {% endfor %}
-    </ul>
-    {% if session.username is defined %}
+      </ul>
+      {% if session.username is defined %}
       <div class="navbar-text d-none d-md-block ml-auto mr-2">
         Currently logged in as
         <a href="#">{{ session.username }}</a>
       </div>
     {% endif %}
+    </div>
   </div>
 </nav>
