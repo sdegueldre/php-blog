@@ -7330,3 +7330,6 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
 }*/
 body {
   min-height: 100vh; }
+
+.ck-content {
+  min-height: 200px; }
