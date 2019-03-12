@@ -7337,3 +7337,7 @@ body {
 .post-title::placeholder {
   font-size: 2rem;
   font-family: serif; }
+
+.nav-custom {
+  width: 150px;
+  border-radius: 0 !important; }
