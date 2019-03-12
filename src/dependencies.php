@@ -44,6 +44,9 @@ $container['render'] = function ($c) {
     $twig->addGlobal('router', $c->get('router'));
     $twig->addGlobal('session', $_SESSION);
     $twig->addGlobal('navItems', $settings['navbar']);
+    $function = new \Twig\TwigFunction('dump', print_r);
+    $twig->addFunction($function);
+
 
     return function(Response $response, $template, $args) use ($twig){
         $response->getBody()->write($twig->render($template, $args));
