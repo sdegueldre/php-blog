@@ -7333,3 +7333,7 @@ body {
 
 .ck-content {
   min-height: 200px; }
+
+.post-title::placeholder {
+  font-size: 2rem;
+  font-family: serif; }
