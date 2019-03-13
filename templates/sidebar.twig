@@ -1,7 +1,7 @@
 <!-- Sidebar Widgets Column -->
 <div class="col-lg-4">
 
-   
+
 
     <!-- Categories Widget -->
     <div class="card my-4">
@@ -13,7 +13,7 @@
               {% for category in categories %}
               {% if loop.index0 is divisible by(2) %}
               <li>
-                <a href=" {{ router.pathFor('category', {'domain': domain, 'category': category})}} ">{{ category }}</a>
+                <a href="{{ router.pathFor('category', {'domain': domain, 'category': category})}}">{{ category }}</a>
               </li>
               {% endif %}
               {% endfor %}
@@ -24,7 +24,7 @@
               {% for category in categories %}
               {% if not loop.index0 is divisible by(2) %}
               <li>
-                <a href="#">{{ category }}</a>
+                <a href="{{ router.pathFor('category', {'domain': domain, 'category': category})}}">{{ category }}</a>
               </li>
               {% endif %}
               {% endfor %}
@@ -44,7 +44,7 @@
               {% for author in authors %}
               {% if loop.index0 is divisible by(2) %}
               <li>
-                <a href="#">{{ author.username }}</a>
+                <a href="{{ router.pathFor('author', {'domain': domain, 'author': author.username})}}">{{ author.username }}</a>
               </li>
               {% endif %}
               {% endfor %}
@@ -55,7 +55,7 @@
               {% for author in authors %}
               {% if not loop.index0 is divisible by(2) %}
               <li>
-                <a href="#">{{ author.username }}</a>
+                <a href="{{ router.pathFor('author', {'domain': domain, 'author': author.username})}}">{{ author.username }}</a>
               </li>
               {% endif %}
               {% endfor %}

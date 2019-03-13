@@ -24,7 +24,7 @@
           <!-- <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"> -->
           <div class="card-body">
             <h2 class="card-title">{{ article.title }}</h2>
-            <p class="card-text">{{ article.text|raw }}</p>
+            <div class="card-text article-text">{{ article.text|raw }}</div>
             <p class="card-text"> {% for category in article.categories %}
               {{ category }},
               {% endfor %}</p>

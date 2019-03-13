@@ -212,7 +212,7 @@ $app->get('/~{domain}/category/{category}', function (Request $request, Response
 
 //Supply variables for the author's page
 
-$app->get('/~{domain}/authors/{author}', function (Request $request, Response $response, array $args) {
+$app->get('/~{domain}/author/{author}', function (Request $request, Response $response, array $args) {
     $author = $this->db->query('
         SELECT username, id
         FROM users
@@ -234,8 +234,8 @@ $app->get('/~{domain}/authors/{author}', function (Request $request, Response $r
         array($author['id']));
 
     $args['articles'] = $articles;
-    return ($this->render)($response, 'authors.twig', $args);
-})->setName('Authors');
+    return ($this->render)($response, 'author.twig', $args);
+})->setName('author');
 
 
 

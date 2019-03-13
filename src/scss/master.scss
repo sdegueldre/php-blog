@@ -61,3 +61,9 @@ td, th {
 .inputCatDash::-ms-input-placeholder { /* Microsoft Edge */
   color: black;
 }
+
+.article-text {
+  max-height: 200px;
+  overflow: hidden;
+  mask-image: linear-gradient(black, rgba(0,0,0,1), rgba(0,0,0,0))
+}
