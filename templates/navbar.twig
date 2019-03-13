@@ -22,18 +22,20 @@
       aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    
+
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav">
-        {% for itemRoute, itemName in navItems %}
-        <li class="nav-item {% if itemRoute == route %}active{% endif %}">
-          <a class="nav-link" href="{{ router.pathFor(itemRoute, {'domain':domain}) }}">
-            {{ itemName }}
-            {% if itemRoute == route %}
-            <span class="sr-only">(current)</span>
-            {% endif %}
-          </a>
-        </li>
+        {% for itemRoute, item in navItems %}
+          {% if session.permissions >= item.permissions %}
+            <li class="nav-item {% if itemRoute == route %}active{% endif %}">
+              <a class="nav-link" href="{{ router.pathFor(itemRoute, {'domain':domain}) }}">
+                {{ item.name }}
+                {% if itemRoute == route %}
+                <span class="sr-only">(current)</span>
+                {% endif %}
+              </a>
+            </li>
+          {% endif %}
         {% endfor %}
       </ul>
 

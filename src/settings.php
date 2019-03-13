@@ -28,11 +28,26 @@ return [
             ],
             // display name => route name
             'navbar' => [
-                'home' => 'Blog',
-                'login' => 'Log in',
-                'signup' => 'Sign up',
-                'post' => 'New article',
-                'dashboard' => 'Dashboard',
+                'home' => [
+                    'name' => 'Blog',
+                    'permissions' => 0
+                    ],
+                'login' => [
+                    'name' => 'Log in',
+                    'permission' => 0
+                    ],
+                'signup' => [
+                    'name' => 'Sign up',
+                    'permissions' => 0
+                    ],
+                'post' => [
+                    'name' => 'New article',
+                    'permissions' => 1
+                    ],
+                'dashboard' => [
+                    'name' => 'Dashboard',
+                    'permissions' => 2
+                    ],
             ],
         ],
     ],

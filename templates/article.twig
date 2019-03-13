@@ -26,7 +26,7 @@
       <!-- Categories -->
       <p>
         {% for category in article.categories %}
-        {{ category }}, 
+        {{ category }},
         {% endfor %}
       </p>
 
@@ -43,18 +43,18 @@
       <hr>
 
       <!-- Comments Form -->
-      
+
       <div class="card my-4">
         <h5 class="card-header">Laisser un commentaire:</h5>
         <div class="card-body">
-          <form>
+          <form action="{#{{ router.pathFor('comment', {'domain': domain, 'id': article.id}) }}#}#" method="post">
             <div class="form-group">
               <textarea class="form-control" rows="3" {% if not session.username %}
               disabled
               placeholder = "Vous devez être connecté pour commenter"
               {% endif %} ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" {% if not session.username %}disabled{% endif %}>Submit</button>
           </form>
         </div>
       </div>

@@ -7349,3 +7349,9 @@ body {
 
 .dropdown-toggle::after {
   display: none; }
+
+.custom-select {
+  -moz-appearance: none; }
+
+td {
+  vertical-align: middle !important; }

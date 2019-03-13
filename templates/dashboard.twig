@@ -1,12 +1,14 @@
 {% extends 'common.twig' %}
 
+{% set users = [{'username': 'Kwantuum', 'id': 1, 'permissions': 2}] %}
+
 {% block content %}
 {# <h2>Article list:</h2>
   {% for article in articles %}
     <p><strong>{{ article.title }}</strong> by {{ article.author }} on {{ article.date|date("F jS, Y") }}</p>
     <p>
       {% for category in article.categories %}
-        {{ category }} 
+        {{ category }}
       {% endfor %}
     </p>
   {% endfor %}
@@ -44,8 +46,8 @@
             <td>{{ article.title }}</td>
             <td>{{article.date|date("F jS, Y")}} </td>
             <td>{{ article.author }}</td>
-            <td><a href="#"><i class="fas fa-edit"></i></a></td>
-            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+            <td><a href="{{ router.pathFor('edit', {'domain': domain, 'id': article.id}) }}"><i class="fas fa-edit"></i></a></td>
+            <td><a href="{# {{ router.pathFor('delete', {'domain': domain, 'id': article.id}) }} #}#"><i class="fas fa-trash-alt"></i></a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -71,18 +73,14 @@
             <td>{{ user.username }}</td>
             <td>{{ user.email }} </td>
             <td>
-              {% if user.permissions == 0 %}
-              Utilisateur
-              {% elseif user.permissions == 1 %}
-              Auteur
-              {% elseif user.permissions == 2 %}
-              Admin
-              {% else %}
-              {{ user.permissions }}
-              {% endif %}
+              <select class="custom-select" name="permissions">
+                <option value="0" {% if user.permissions == 0 %}selected{% endif %}>Utilisateur</option>
+                <option value="1" {% if user.permissions == 1 %}selected{% endif %}>Auteur</option>
+                <option value="2" {% if user.permissions == 2 %}selected{% endif %}>Admin</option>
+              </select>
             </td>
             <td><a href="#"><i class="fas fa-edit"></i></a></td>
-            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+            <td><a href="{# {{ router.pathFor('deleteUser', {'domain': domain, 'id': user.id}) }}#}#"><i class="fas fa-trash-alt"></i></a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -104,7 +102,7 @@
                 <th scope="row">{{ category.id }}</th>
                 <td>{{ category }}</td>
                 <td><a href="#"><i class="fas fa-edit"></i></a></td>
-            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
               </tr>
               {% endfor %}
             </tbody>
