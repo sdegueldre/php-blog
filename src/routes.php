@@ -170,7 +170,7 @@ $app->get('/~{domain}/edit/{id}', function (Request $request, Response $response
 })->setName('edit');
 
 //Supply variables for category page
-$app->get('/~{domain}/categories/{category}', function (Request $request, Response $response, array $args) {
+$app->get('/~{domain}/category/{category}', function (Request $request, Response $response, array $args) {
     $category = $this->db->query('
         SELECT name
         FROM categories
