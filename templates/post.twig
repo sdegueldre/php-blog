@@ -1,6 +1,7 @@
 {% extends 'common.twig' %}
 
 {% block content %}
+<div class="container">
   <div class="container py-5 col-lg-8">
     <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
     <input type="text" placeholder="Title" class="form-control form-control-lg post-title">
@@ -16,4 +17,6 @@
     </script>
     <button type="submit" class="btn btn-primary my-2">Submit</button>
   </div>
+  </div>
+  <div class="flex-grow-1"></div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'common.twig' %}
 
 {% block content %}
-  <h2>Article list:</h2>
+{# <h2>Article list:</h2>
   {% for article in articles %}
     <p><strong>{{ article.title }}</strong> by {{ article.author }} on {{ article.date|date("F jS, Y") }}</p>
     <p>
@@ -13,5 +13,104 @@
   <h2>Category list:</h2>
   {% for category in categories %}
       <p>{{ category }}</p>
-  {% endfor %}
+  {% endfor %} #}
+<div class="container-fluid mx-0 d-flex flex-row px-0 align-items-stretch flex-grow-1">
+  <div class="nav flex-column nav-pills text-light bg-secondary" id="v-pills-tab" role="tablist"
+    aria-orientation="vertical">
+    <a class="nav-link nav-custom active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+      aria-controls="v-pills-home" aria-selected="true">Articles</a>
+    <a class="nav-link nav-custom" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+      aria-controls="v-pills-profile" aria-selected="false">Membres</a>
+    <a class="nav-link nav-custom" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
+      aria-controls="v-pills-messages" aria-selected="false">Categories</a>
+  </div>
+  <div class="tab-content w-100" id="v-pills-tabContent">
+    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Titre</th>
+            <th scope="col">Date</th>
+            <th scope="col">Auteur</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for article in articles %}
+          <tr>
+            <th scope="row">{{ article.id }}</th>
+            <td>{{ article.title }}</td>
+            <td>{{article.date|date("F jS, Y")}} </td>
+            <td>{{ article.author }}</td>
+            <td><a href="#"><i class="fas fa-edit"></i></a></td>
+            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Email</th>
+            <th scope="col">Permission</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <th scope="row">{{ user.id }}</th>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }} </td>
+            <td>
+              {% if user.permissions == 0 %}
+              Utilisateur
+              {% elseif user.permissions == 1 %}
+              Auteur
+              {% elseif user.permissions == 2 %}
+              Admin
+              {% else %}
+              {{ user.permissions }}
+              {% endif %}
+            </td>
+            <td><a href="#"><i class="fas fa-edit"></i></a></td>
+            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Categories</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for category in categories %}
+              <tr>
+                <th scope="row">{{ category.id }}</th>
+                <td>{{ category }}</td>
+                <td><a href="#"><i class="fas fa-edit"></i></a></td>
+            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+    </div>
+    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+  </div>
+</div>
 {% endblock %}
