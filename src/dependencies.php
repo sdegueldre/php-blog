@@ -44,7 +44,7 @@ $container['render'] = function ($c) {
     $twig->addGlobal('router', $c->get('router'));
     $twig->addGlobal('session', $_SESSION);
     $twig->addGlobal('navItems', $settings['navbar']);
-    $function = new \Twig\TwigFunction('dump', print_r);
+    $function = new \Twig\TwigFunction('dump', 'print_r');
     $twig->addFunction($function);
 
 

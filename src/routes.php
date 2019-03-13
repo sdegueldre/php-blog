@@ -76,6 +76,8 @@ $app->get('/~{domain}/article/{id}', function (Request $request, Response $respo
         return ($this->notFoundHandler)($request, $response);
     }
 
+    $authorIds = $this->db->query('SELECT id FROM users');
+
     // Add categories to the article
     $article['categories'] = array();
     $catArticles = $this->db->query('
@@ -102,6 +104,7 @@ $app->get('/~{domain}/article/{id}', function (Request $request, Response $respo
         WHERE article_id = ?;
     ', array($args['id']));
 
+    $args['authorId'] = $authorIds;
     $args['article'] = $article;
     $args['route'] = 'article';
     return ($this->render)($response, 'article.twig', $args);
@@ -238,7 +241,7 @@ $app->get('/~{domain}/authors/{author}', function (Request $request, Response $r
 
     $args['articles'] = $articles;
     return ($this->render)($response, 'authors.twig', $args);
-})->setName('Authors');
+})->setName('authors');
 
 
 
@@ -354,7 +357,7 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
     $authorID = $_SESSION['userID'];
     $categoriesID = $article['categories'];
 
-    $articleID = $this->$db->query('
+    $articleID = $this->db->query('
         INSERT INTO articles (title, text, author_id)
         VALUES (:title, :text, :author_id)
         RETURNING id', [
@@ -364,7 +367,7 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
     ])[0]['id'];
 
     foreach($categoriesID as $categoryID) {
-        $status = $this->$db->query('
+        $status = $this->db->query('
             INSERT INTO cat_art (article_id, category_id)
             VALUES (:articleID, :categoryID)',
             array(
@@ -397,7 +400,7 @@ $app->post('/~{domain}/article/{id}', function (Request $request, Response $resp
     $articleID = $args['id'];
     $text = $comment['text'];
 
-    $insertComment = $this->$db->query('
+    $insertComment = $this->db->query('
         INSERT INTO comments (article_id, author_id, text)
         VALUES (:article_id, :author_id, :text)',
         array(
@@ -410,5 +413,56 @@ $app->post('/~{domain}/article/{id}', function (Request $request, Response $resp
     return $response->withRedirect($this->router->pathFor('article/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
 });
 
-$app->post('/~{domain}/edit/{id}', function (Request $request, Response $response, array $args) {
+
+//update db when editing article
+$app->put('/~{domain}/article/{id}', function (Request $request, Response $response, array $args) {
+    $article = $request->getParsedBody();
+    $title = $article['title'];
+    $text = $article['text'];
+    $author_id = $article['authorId'];
+    $categoriesID = array();
+
+    foreach($article as $key => $value) {
+        if ($key == 'title' || $key => 'text') {
+            continue;
+        }
+        if ($value == 'true') {
+            array_push($categoriesID, $key)
+        }
+    }
+
+    $updateArticleTable = $this->bd->query('
+        UPDATE articles
+        SET
+            title = :title,
+            text = :text,
+            author_id = :author_id,
+        WHERE articles.id = :articles_id',
+        array(
+            ':title' => $title,
+            ':text'=> $text,
+            ':author_id' => $author_id,
+            ':articles_id' => $args['id'],
+    ));
+
+    $deleteArtCategories = $this->bd->query('
+        DELETE FROM cat_art
+        WHERE article_id = ?',
+        array($args['id'])
+    );
+
+    foreach($categoriesID as $IDElement) {
+        $updateArtCategories = $this->bd->query('
+            INSERT INTO cat_art (article_id, category_id)
+            VALUES (:articleID, :category_id)',
+            array(
+                ':articleID' => $args['id'],
+                ':category_id' => $IDElement,
+            )
+        );
+    }
+
+    return $response->withRedirect($this->router->pathFor('edit/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
+    });
+
 });
