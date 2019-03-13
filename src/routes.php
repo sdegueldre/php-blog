@@ -6,14 +6,16 @@ use Slim\Http\Response;
 // Routes
 
 //supply variables to the home page
-$app->get('/~{domain}[/]', function (Request $request, Response $response, array $args) {
+$app->get('/~{domain}[/{page}]', function (Request $request, Response $response, array $args) {
     // Select last 5 articles with their author
     $articles = $this->db->query('
         SELECT articles.id, title, timestamp as date, text, username as author
         FROM articles
         INNER JOIN users
             ON author_id = users.id
-        ORDER BY date DESC LIMIT 5');
+        ORDER BY date DESC LIMIT 5 OFFSET ((:page -1) * 5)',
+        array(':page' => $args['page'])
+    );
     if(count($articles) > 0) {
         // Add categories to the articles
         $selectedArticleIds = array();
@@ -164,11 +166,81 @@ $app->get('/~{domain}/edit/{id}', function (Request $request, Response $response
     return ($this->render)($response, 'edit.twig', $args);
 })->setName('edit');
 
+//Supply variables for category page
+$app->get('/~{domain}/categories/{category}', function (Request $request, Response $response, array $args) {
+    $category = $this->db->query('
+        SELECT name
+        FROM categories
+        WHERE name = ?',
+        array($args['category'])
+    )[0];
+    if (count($category) == 0) {
+        return ($this->notFoundHandler)($request, $response);
+    }
+
+    $articles = $this->db->query('
+        SELECT articles.id, title, timestamp as date, text, username as authors
+        FROM articles
+            INNER JOIN users
+            ON articles.author_id = users.id ');
+
+    $selectedArticleIds = $this->db->query('
+        SELECT articles.id
+        FROM cat_art
+            INNER JOIN articles
+                ON cat_art.article_id = articles.id
+            INNER JOIN categories
+                ON cat_art.category_id = categories.id
+        WHERE categories.name = ?',
+        array($category['name']));
+
+    $selectedArticles = array();
+    foreach($articles as $article) {
+        foreach($selectedArticleIds as $selectedArticleId) {
+            if ($article['id'] == $selectedArticleId['id']) {
+                array_push($selectedArticles, $article);
+            }
+        }
+    }
+
+    $args['articles'] = $selectedArticles;
+    return ($this->render)($response, 'category.twig', $args);
+})->setName('category');
+
+//Supply variables for the author's page
+
+$app->get('/~{domain}/authors/{author}', function (Request $request, Response $response, array $args) {
+    $author = $this->db->query('
+        SELECT username, id
+        FROM users
+        WHERE permissions >= 1
+            AND username = :author',
+        array($args['author']))[0];
+
+
+    if (count($author) == 0) {
+        return ($this->notFoundHandler)($request, $response);
+    }
+
+    $articles = $this->db->query('
+        SELECT articles.id, title, timestamp as date, text, username as authors
+        FROM articles
+            INNER JOIN users
+            ON articles.author_id = users.id
+        WHERE users.id = ?',
+        array($author['id']));
+
+    $args['articles'] = $articles;
+    return ($this->render)($response, 'authors.twig', $args);
+})->setName('Authors');
+
+
+
 
 //Supply variables for dashboard
 $app->get('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
     $articles = $this->db->query('
-        SELECT title, articles.id, username as author
+        SELECT title, articles.id, timestamp as date, text, username as author
         FROM articles
             INNER JOIN users
                 ON articles.author_id = users.id;
@@ -194,8 +266,12 @@ $app->get('/~{domain}/dashboard', function (Request $request, Response $response
         }
     }
     $categories = $this->db->query('SELECT * FROM categories');
-
+    $users = $this->db->query('
+    SELECT id, username, email, permissions
+    FROM users
+    ');
     $args['categories'] = array_map(function($v){return $v['name'];}, $categories);
+    $args['users'] = $users;
     $args['articles'] = $articles;
     $args['route'] = 'dashboard';
     return ($this->render)($response, 'dashboard.twig', $args);
@@ -206,7 +282,7 @@ $app->get('/~{domain}/logout', function (Request $request, Response $response, a
     session_start();
 
     return $response->withRedirect($this->router->pathFor('login', ['domain' => $args['domain']]));
-});
+})->setName('logout');
 
 // Post Routes
 
