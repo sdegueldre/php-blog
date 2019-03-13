@@ -7334,9 +7334,14 @@ body {
 .ck-content {
   min-height: 200px; }
 
-.post-title::placeholder {
-  font-size: 2rem;
-  font-family: serif; }
+.post-title {
+  border: none;
+  box-shadow: none; }
+  .post-title::placeholder {
+    font-size: 2rem;
+    font-family: serif; }
+  .post-title:focus {
+    box-shadow: none; }
 
 .nav-custom {
   width: 150px;

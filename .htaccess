@@ -16,6 +16,13 @@
   # absolute physical path to the directory that contains this htaccess file.
   # RewriteBase /
 
+  RewriteCond %{REQUEST_FILENAME} ^.*css$
+  RewriteRule ^ public/css/master.css [L]
+
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^ public/index.php [QSA,L]
+
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteCond %{REQUEST_FILENAME} !\.css$
+  RewriteRule ^ public/index.php [QSA,L]  
 </IfModule>
