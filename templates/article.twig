@@ -43,12 +43,16 @@
       <hr>
 
       <!-- Comments Form -->
+      
       <div class="card my-4">
-        <h5 class="card-header">Leave a Comment:</h5>
+        <h5 class="card-header">Laisser un commentaire:</h5>
         <div class="card-body">
           <form>
             <div class="form-group">
-              <textarea class="form-control" rows="3"></textarea>
+              <textarea class="form-control" rows="3" {% if not session.username %}
+              disabled
+              placeholder = "Vous devez être connecté pour commenter"
+              {% endif %} ></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
@@ -57,6 +61,7 @@
 
       <!-- Single Comment -->
       {% for comment in article.comments %}
+      <hr>
       <div class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
         <div class="media-body">

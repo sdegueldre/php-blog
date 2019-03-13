@@ -7346,3 +7346,6 @@ body {
 .nav-custom {
   width: 150px;
   border-radius: 0 !important; }
+
+.dropdown-toggle::after {
+  display: none; }

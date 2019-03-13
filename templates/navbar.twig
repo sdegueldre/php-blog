@@ -1,36 +1,58 @@
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
   <div class="container">
-    <a class="navbar-brand" href="#">Farts & Dabs</a>
+    <a class="navbar-brand" href="{{ router.pathFor("home", {'domain': domain}) }}">Farts & Dabs</a>
     {% if session.username is defined %}
-    <div class="navbar-text d-md-none ml-auto mr-3">
-      Currently logged in as
-      <a href="#">{{ session.username }}</a>
-    </div>
-  {% endif %}
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+    <ul class="navbar-nav ml-auto d-md-none mr-3">
+      <li class="ml-auto nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user-circle fa-2x"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right position-absolute text-right" aria-labelledby="navbarDropdown">
+            <p class="dropdown-item disabled">You're logged in as {{ session.username }}</p>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/~a/logout">logout</a>
+          {# <a href="{{ router.pathFor("logout", {'domain': domain}) }}"></a> #}
+        </div>
+      </li>
+    </ul>
+    {% endif %}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
+    
     <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
+      <ul class="navbar-nav">
         {% for itemRoute, itemName in navItems %}
         <li class="nav-item {% if itemRoute == route %}active{% endif %}">
           <a class="nav-link" href="{{ router.pathFor(itemRoute, {'domain':domain}) }}">
             {{ itemName }}
             {% if itemRoute == route %}
-              <span class="sr-only">(current)</span>
+            <span class="sr-only">(current)</span>
             {% endif %}
           </a>
         </li>
-      {% endfor %}
+        {% endfor %}
       </ul>
-      {% if session.username is defined %}
-      <div class="navbar-text d-none d-md-block ml-auto mr-2">
-        Currently logged in as
-        <a href="#">{{ session.username }}</a>
-      </div>
-    {% endif %}
+
     </div>
+    {% if session.username is defined %}
+    <ul class="navbar-nav ml-auto d-none d-md-block">
+      <li class="ml-auto nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user-circle fa-2x"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="navbarDropdown">
+          <p class="dropdown-item disabled">You're logged in as {{ session.username }}</p>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/~a/logout">logout</a>
+          {# <a href="{{ router.pathFor("logout", {'domain': domain}) }}"></a> #}
+        </div>
+      </li>
+    </ul>
+    {% endif %}
   </div>
 </nav>
