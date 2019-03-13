@@ -20,7 +20,14 @@ body {
   min-height: 200px;
 }
 
-.post-title::placeholder{
-  font-size: 2rem;
-  font-family: serif;
+.post-title{
+  border: none;
+  box-shadow: none;
+  &::placeholder{
+    font-size: 2rem;
+    font-family: serif;
+  }
+  &:focus{
+    box-shadow: none;
+  }
 }
