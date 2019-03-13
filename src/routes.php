@@ -6,7 +6,7 @@ use Slim\Http\Response;
 // Routes
 
 //supply variables to the home page
-$app->get('/~{domain}[/[{page}]]', function (Request $request, Response $response, array $args) {
+$app->get('/~{domain}/blog[/[{page}]]', function (Request $request, Response $response, array $args) {
     if (!isset($args['page'])){
         $args['page'] = 1;
     }
