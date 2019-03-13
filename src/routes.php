@@ -5,6 +5,9 @@ use Slim\Http\Response;
 
 // Routes
 
+$app->get('/~{domain}[/]', function (Request $request, Response $response, array $args) {
+    return $response->withRedirect($this->router->pathFor('home', ['domain' => $args['domain']]), 301);
+});
 //supply variables to the home page
 $app->get('/~{domain}/blog[/[{page}]]', function (Request $request, Response $response, array $args) {
     if (!isset($args['page'])){
