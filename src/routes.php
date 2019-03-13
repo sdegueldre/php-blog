@@ -6,7 +6,10 @@ use Slim\Http\Response;
 // Routes
 
 //supply variables to the home page
-$app->get('/~{domain}[/{page}]', function (Request $request, Response $response, array $args) {
+$app->get('/~{domain}[/[{page}]]', function (Request $request, Response $response, array $args) {
+    if (!isset($args['page'])){
+        $args['page'] = 1;
+    }
     // Select last 5 articles with their author
     $articles = $this->db->query('
         SELECT articles.id, title, timestamp as date, text, username as author
@@ -379,6 +382,7 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
 });
 
 //
+
 $app->post('/~{domain}/article/{id}', function (Request $request, Response $response, array $args) {
     if (!isset($_SESSION['permission'])) {
         return $response->withStatus(401);
@@ -403,5 +407,5 @@ $app->post('/~{domain}/article/{id}', function (Request $request, Response $resp
     return $response->withRedirect($this->router->pathFor('article/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
 });
 
-// $app->post('/~{domain}/edit/{id}', function (Request $request, Response $response, array $args) {
-// };
+$app->post('/~{domain}/edit/{id}', function (Request $request, Response $response, array $args) {
+});
