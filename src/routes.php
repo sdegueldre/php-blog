@@ -351,7 +351,7 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
     $authorID = $_SESSION['userID'];
     $categoriesID = $article['categories'];
 
-    $articleID = $this->$db->query('
+    $articleID = $this->db->query('
         INSERT INTO articles (title, text, author_id)
         VALUES (:title, :text, :author_id)
         RETURNING id', [
@@ -361,7 +361,7 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
     ])[0]['id'];
 
     foreach($categoriesID as $categoryID) {
-        $status = $this->$db->query('
+        $status = $this->db->query('
             INSERT INTO cat_art (article_id, category_id)
             VALUES (:articleID, :categoryID)',
             array(

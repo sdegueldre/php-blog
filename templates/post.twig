@@ -1,22 +1,24 @@
 {% extends 'common.twig' %}
 
 {% block content %}
-<div class="container">
-  <div class="container py-5 col-lg-8">
-    <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
-    <input type="text" placeholder="Title" class="form-control form-control-lg post-title">
-    <textarea name="content" id="editor"></textarea>
-    <script>
-        ClassicEditor
-            .create( document.querySelector( '#editor' ), {
-              toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ]
-            })
-            .catch( error => {
-                console.error( error );
-            } );
-    </script>
-    <button type="submit" class="btn btn-primary my-2">Submit</button>
-  </div>
+  <div class="container">
+    <div class="container py-5 col-lg-8">
+      <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
+      <form action="{{ router.pathFor('post', {'domain': domain})}}" method="post">
+        <input type="text" name="title" placeholder="Title" class="form-control form-control-lg post-title">
+        <textarea name="text" id="editor"></textarea>
+        <button type="submit" class="btn btn-primary my-2">Submit</button>
+      </form>
+      <script>
+          ClassicEditor
+              .create( document.querySelector( '#editor' ), {
+                toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ]
+              })
+              .catch( error => {
+                  console.error( error );
+              } );
+      </script>
+    </div>
   </div>
   <div class="flex-grow-1"></div>
 {% endblock %}

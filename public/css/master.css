@@ -7353,5 +7353,5 @@ body {
 .custom-select {
   -moz-appearance: none; }
 
-td {
+td, th {
   vertical-align: middle !important; }
