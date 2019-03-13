@@ -8,18 +8,18 @@
       <h5 class="card-header">Categories</h5>
       <div class="card-body">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-6">
             <ul class="list-unstyled mb-0">
               {% for category in categories %}
               {% if loop.index0 is divisible by(2) %}
               <li>
-                <a href="#">{{ category }}</a>
+                <a href=" ">{{ category }}</a>
               </li>
               {% endif %}
               {% endfor %}
             </ul>
           </div>
-          <div class="col-lg-6">
+          <div class="col-6">
             <ul class="list-unstyled mb-0">
               {% for category in categories %}
               {% if not loop.index0 is divisible by(2) %}
@@ -39,7 +39,7 @@
       <h5 class="card-header">Auteurs</h5>
       <div class="card-body">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-6">
             <ul class="list-unstyled mb-0">
               {% for author in authors %}
               {% if loop.index0 is divisible by(2) %}
@@ -50,7 +50,7 @@
               {% endfor %}
             </ul>
           </div>
-          <div class="col-lg-6">
+          <div class="col-6">
             <ul class="list-unstyled mb-0">
               {% for author in authors %}
               {% if not loop.index0 is divisible by(2) %}
