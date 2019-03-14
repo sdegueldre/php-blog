@@ -2,21 +2,9 @@
 
 {% block content %}
 <!-- Page Content -->
-<div class="container">
-    <div class="row">
-        <!-- Blog Entries Column -->
-        <div class="col-lg-8">
-
-            <h1 class="my-4">ERROR 404
-                
-            </h1>
-            <h2>Page not found</h2>
-        </div>
-        <a class="navbar-brand" href="{{ router.pathFor("home", {'domain': domain}) }}">Click here to go to the home page</a>
-    </div>
-    <!-- /.row -->
-
+<div class="container text-center flex-grow-1 d-flex flex-column justify-content-center">
+  <h1>ERROR 404</h1>
+  <h2>Page not found</h2>
+  <a href="{{ router.pathFor("home", {'domain': domain}) }}">Click here to go to the home page</a>
 </div>
-<!-- /.container -->
-<div class="flex-grow-1"></div>
 {% endblock %}
