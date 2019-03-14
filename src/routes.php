@@ -363,7 +363,7 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
       }
       if ($value == 'true'){
         array_push($categoriesID, $key);
-      }  
+      }
     }
 
     $articleID = $this->db->query('
@@ -422,6 +422,25 @@ $app->post('/~{domain}/article/{id}', function (Request $request, Response $resp
     return $response->withRedirect($this->router->pathFor('article/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
 });
 
+//Create a category from the Dashboard.
+
+$app->post('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
+  if ($_SESSION['permissions'] < 2) {
+      return $response->withStatus(401);
+  }
+  $category  = $request->getParsedBody();
+  $name = $cat['name'];
+
+  $insertCategory = $this->db->query('
+  INSERT INTO categories (id,name)
+  VALUES (DEFAULT, :name)',
+  array(
+        ':name' => $name,
+      )
+    );
+});
+
+
 
 //update db when editing article
 $app->put('/~{domain}/article/{id}', function (Request $request, Response $response, array $args) {
@@ -472,20 +491,4 @@ $app->put('/~{domain}/article/{id}', function (Request $request, Response $respo
     }
 
     return $response->withRedirect($this->router->pathFor('edit/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
-});
-
-$app->post('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
-  if ($_SESSION['permissions'] < 2) {
-      return $response->withStatus(401);
-  }
-  $category  = $request->getParsedBody();
-  $name = $cat['name'];
-
-  $insertCategory = $this->db->query('
-  INSERT INTO categories (id,name)
-  VALUES (DEFAULT, :name)',
-  array(
-        ':name' => $name,
-      )
-    );
 });
