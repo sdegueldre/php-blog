@@ -423,11 +423,11 @@ $app->put('/~{domain}/article/{id}', function (Request $request, Response $respo
     $categoriesID = array();
 
     foreach($article as $key => $value) {
-        if ($key == 'title' || $key => 'text') {
+        if ($key == 'title' || $key == 'text') {
             continue;
         }
         if ($value == 'true') {
-            array_push($categoriesID, $key)
+            array_push($categoriesID, $key);
         }
     }
 
@@ -463,6 +463,4 @@ $app->put('/~{domain}/article/{id}', function (Request $request, Response $respo
     }
 
     return $response->withRedirect($this->router->pathFor('edit/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
-    });
-
 });
