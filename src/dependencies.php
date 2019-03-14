@@ -52,7 +52,7 @@ $container['render'] = function ($c) {
     $twig->addGlobal('authors', $authors);
 
 
-    $function = new \Twig\TwigFunction('dump', print_r);
+    $function = new \Twig\TwigFunction('dump', 'print_r');
     $twig->addFunction($function);
 
 

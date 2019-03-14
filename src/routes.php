@@ -5,6 +5,9 @@ use Slim\Http\Response;
 
 // Routes
 
+$app->get('/~{domain}[/]', function (Request $request, Response $response, array $args) {
+    return $response->withRedirect($this->router->pathFor('home', ['domain' => $args['domain']]), 301);
+});
 //supply variables to the home page
 $app->get('/~{domain}/blog[/[{page}]]', function (Request $request, Response $response, array $args) {
     if (!isset($args['page'])){
@@ -73,6 +76,8 @@ $app->get('/~{domain}/article/{id}', function (Request $request, Response $respo
         return ($this->notFoundHandler)($request, $response);
     }
 
+    $authorIds = $this->db->query('SELECT id FROM users');
+
     // Add categories to the article
     $article['categories'] = array();
     $catArticles = $this->db->query('
@@ -96,9 +101,10 @@ $app->get('/~{domain}/article/{id}', function (Request $request, Response $respo
                 ON comments.article_id = articles.id
             INNER JOIN users
                 ON comments.author_id = users.id
-        WHERE article_id = ?;
+        WHERE article_id = ? ORDER BY date DESC;
     ', array($args['id']));
 
+    $args['authorId'] = $authorIds;
     $args['article'] = $article;
     $args['route'] = 'article';
     return ($this->render)($response, 'article.twig', $args);
@@ -242,11 +248,16 @@ $app->get('/~{domain}/author/{author}', function (Request $request, Response $re
 
 //Supply variables for dashboard
 $app->get('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
+    if ($_SESSION['permissions'] < 2) {
+        return $response->withStatus(401);
+    }
+
     $articles = $this->db->query('
         SELECT title, articles.id, timestamp as date, text, username as author
         FROM articles
             INNER JOIN users
-                ON articles.author_id = users.id;
+                ON articles.author_id = users.id
+        ORDER BY date DESC;
     ');
 
     $catArticles = $this->db->query('
@@ -349,7 +360,16 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
     $title = $article['title'];
     $text = $article['text'];
     $authorID = $_SESSION['userID'];
-    $categoriesID = $article['categories'];
+    $categoriesID = array();
+
+    foreach ($article as $key => $value) {
+      if ($key == 'title' || $key == 'text'){
+        continue;
+      }
+      if ($value == 'true'){
+        array_push($categoriesID, $key);
+      }
+    }
 
     $articleID = $this->db->query('
         INSERT INTO articles (title, text, author_id)
@@ -407,5 +427,187 @@ $app->post('/~{domain}/article/{id}', function (Request $request, Response $resp
     return $response->withRedirect($this->router->pathFor('article', ['domain' => $args['domain'], 'id' => $args['id']]));
 });
 
-$app->post('/~{domain}/edit/{id}', function (Request $request, Response $response, array $args) {
+//Create a category from the Dashboard.
+
+$app->post('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
+  if ($_SESSION['permissions'] < 2) {
+      return $response->withStatus(401);
+  }
+  $category  = $request->getParsedBody();
+  $name = $category['name'];
+
+  $insertCategory = $this->db->query('
+  INSERT INTO categories (id,name)
+  VALUES (DEFAULT, :name)',
+  array(
+        ':name' => $name,
+      )
+    );
+});
+
+
+
+//update db when editing article
+$app->put('/~{domain}/article/{id}', function (Request $request, Response $response, array $args) {
+    if ($_SESSION['permissions'] < 2) {
+        return $response->withStatus(401);
+    }
+
+    $article = $request->getParsedBody();
+    $title = $article['title'];
+    $text = $article['text'];
+    $author_id = $article['authorId'];
+    $categoriesID = array();
+
+    foreach($article as $key => $value) {
+        if ($key == 'title' || $key == 'text') {
+            continue;
+        }
+        if ($value == 'true') {
+            array_push($categoriesID, $key);
+        }
+    }
+
+    $updateArticleTable = $this->bd->query('
+        UPDATE articles
+        SET
+            title = :title,
+            text = :text,
+            author_id = :author_id,
+        WHERE articles.id = :articles_id',
+        array(
+            ':title' => $title,
+            ':text'=> $text,
+            ':author_id' => $author_id,
+            ':articles_id' => $args['id'],
+    ));
+
+    $deleteArtCategories = $this->bd->query('
+        DELETE FROM cat_art
+        WHERE article_id = ?',
+        array($args['id'])
+    );
+
+    foreach($categoriesID as $IDElement) {
+        $updateArtCategories = $this->bd->query('
+            INSERT INTO cat_art (article_id, category_id)
+            VALUES (:articleID, :category_id)',
+            array(
+                ':articleID' => $args['id'],
+                ':category_id' => $IDElement,
+            )
+        );
+    }
+
+    return $response->withRedirect($this->router->pathFor('edit/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
+});
+
+
+
+$app->put('/~{domain}/categories/{id}', function (Request $request, Response $response, array $args) {
+    if ($_SESSION['permissions'] < 2) {
+        return $response->withStatus(401);
+    }
+
+    $category = $request->getParsedBody();
+    $name = $category['name'];
+
+
+    $updateCategory = $this->db->query('
+        UPDATE categories
+        SET name = :name
+        WHERE id = :id',
+        array(
+            ':name' => $category['name'],
+            ':id' => $args['id'],
+        )
+    );
+
+    return $response->withRedirect($this->router->pathFor('dashboard', ['domain' => $args['domain']]));
+});
+
+
+$app->delete('/~{domain}/article/{id}', function (Request $request, Response $response, array $args) {
+    if ($_SESSION['permissions'] < 2) {
+        return $response->withStatus(401);
+    }
+
+    $deleteArticle = $this->db->query('
+        DELETE FROM articles
+        WHERE id = :id',
+        array($args['id'])
+    );
+
+    return $response->withRedirect($this->router->pathFor('dashboard', ['domain' => $args['domain']]));
+});
+
+$app->delete('/~{domain}/categories/{id}', function (Request $request, Response $response, array $args) {
+    if ($_SESSION['permissions'] < 2) {
+        return $response->withStatus(401);
+    }
+
+    $deleteCategory = $this->db->query('
+        DELETE FROM categories
+        WHERE id = :id',
+        array($args['id'])
+    );
+
+    return $response->withRedirect($this->router->pathFor('dashboard', ['domain' => $args['domain']]));
+
+});
+// update db when editing user.
+
+$app->put('/~{domain}/users/{id}', function (Request $request, Response $response, array $args) {
+  if ($_SESSION['permissions'] < 2) {
+      return $response->withStatus(401);
+  }
+
+  $permission = $request->getParsedBody();
+
+  $updatePermission = $this->bd->query('
+  UPDATE users
+    SET
+      permissions = :permissions,
+    WHERE users.id = :user_id',
+    array(
+      ':permissions' => $permission,
+      ':user_id' => $args['id'],
+    ));
+    return $response->withRedirect($this->router->pathFor('dashboard', ['domain' => $args['domain'],]));
+});
+
+//delete user from the db.
+
+$app->delete('/~{domain}/users/{id}', function (Request $request, Response $response, array $args) {
+
+  if ($_SESSION['permissions'] < 2) {
+      return $response->withStatus(401);
+  }
+
+  $deleteUser = $this->bd->query('
+      DELETE FROM users
+      WHERE users.id = ?',
+      array($args['id'])
+  );
+      return $response->withRedirect($this->router->pathFor('dashboard', ['domain' => $args['domain'],]));
+});
+
+//delete comments from the db.
+
+$app->delete('/~{domain}/edit/{id}', function (Request $request, Response $response, array $args) {
+
+  if ($_SESSION['permissions'] < 2) {
+      return $response->withStatus(401);
+  }
+  $comment = $request->getParsedBody();
+  $commentid = $comment['id'];
+
+  $deleteComment =$this->bd->query('
+  DELETE FROM comments
+  WHERE comments.id = :comment',
+  array(
+    ':comment' => $commentid,
+  )
+);
+  return $response->withRedirect($this->router->pathFor('edit/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
 });
