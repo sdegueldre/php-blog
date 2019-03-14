@@ -13,22 +13,10 @@
       <!-- Author -->
       <p class="lead">
         by
-        <a href="#">{{ article.author }}</a>
-      </p>
+        <a href="#">{{ article.author }}</a>,
+        posted on {{ article.date|date("F jS, Y") }}</p>
 
       <hr>
-
-      <!-- Date/Time -->
-      <p>Posted on {{ article.date|date("F jS, Y") }}</p>
-
-      <hr>
-
-      <!-- Categories -->
-      <p>
-        {% for category in article.categories %}
-        {{ category }},
-        {% endfor %}
-      </p>
 
       {# <hr> #}
 
@@ -38,9 +26,14 @@
       {# <hr> #}
 
       <!-- Post Content -->
-      <div class = "articleText">{{ article.text|raw }}</div>
+      <div class="articleText">{{ article.text|raw }}</div>
 
       <hr>
+
+      <!-- Categories -->
+      <p class="text-right">
+        {{ article.categories|join(', ') }}
+      </p>
 
       <!-- Comments Form -->
 
@@ -49,12 +42,11 @@
         <div class="card-body">
           <form action="{#{{ router.pathFor('comment', {'domain': domain, 'id': article.id}) }}#}#" method="post">
             <div class="form-group">
-              <textarea class="form-control" rows="3" {% if not session.username %}
-              disabled
-              placeholder = "Vous devez être connecté pour commenter"
-              {% endif %} ></textarea>
+              <textarea class="form-control" rows="3" {% if not session.username %} disabled
+                placeholder="Vous devez être connecté pour commenter" {% endif %}></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" {% if not session.username %}disabled{% endif %}>Submit</button>
+            <button type="submit" class="btn btn-primary"
+              {% if not session.username %}disabled{% endif %}>Submit</button>
           </form>
         </div>
       </div>

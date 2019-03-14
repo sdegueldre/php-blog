@@ -20,21 +20,7 @@
       </div> -->
 
       {% for article in articles %}
-        <div class="card mb-4">
-          <!-- <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"> -->
-          <div class="card-body">
-            <h2 class="card-title">{{ article.title }}</h2>
-            <div class="card-text article-text">{{ article.text|raw }}</div>
-            <p class="card-text"> {% for category in article.categories %}
-              {{ category }},
-              {% endfor %}</p>
-            <a href="{{ router.pathFor('article', {'domain': domain, 'id': article.id})}}" class="btn btn-primary">Read More &rarr;</a>
-          </div>
-          <div class="card-footer text-muted">
-            Posted on {{ article.date|date("F jS, Y") }} by {{ article.author }}
-
-          </div>
-        </div>
+      {{ include("articleCard.twig") }}
       {% endfor %}
       <!-- Pagination -->
       <ul class="pagination justify-content-center mb-4">
