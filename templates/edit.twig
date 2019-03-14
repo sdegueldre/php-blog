@@ -6,35 +6,50 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
     <input type="text" placeholder="Title" class="form-control form-control-lg post-title" value="{{ article.title }}">
     <textarea name="content" id="editor">{{ article.text|nl2br }}</textarea>
+    <div class="card mt-2">
+        <h5 class="card-header">Categories</h5>
+        <div class="card-body">
+          <div class="form-check d-flex flex-row flex-wrap ">
+            {% for category in categories %}
+            <div class="col-6 col-md-4">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <p><label class="form-check-label" for="defaultCheck1">
+                  {{category}}
+                </label></p>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
     <script>
-        ClassicEditor
-            .create( document.querySelector( '#editor' ), {
-              toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ]
-            })
-            .catch( error => {
-                console.error( error );
-            } );
+      ClassicEditor
+        .create(document.querySelector('#editor'), {
+          toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo']
+        })
+        .catch(error => {
+          console.error(error);
+        });
     </script>
     <button type="submit" class="btn btn-primary my-2">Submit</button>
     <!-- Single Comment -->
-   
-  {% for comment in article.comments %}
-  <hr>
-  <div class="media mb-4">
-    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-    <div class="media-body">
-      <h5 class="mt-0">{{ comment.author }}</h5>
-      <p>{{ comment.date|date("F jS, Y") }}</p>
-      <p>{{ comment.text }}</p>
+
+    {% for comment in article.comments %}
+    <hr>
+    <div class="media mb-4 ml-3">
+      <i class="far fa-user-circle fa-3x mt-1"></i>
+      <div class="media-body ml-3">
+        <h5 class="mt-0">{{ comment.author }}</h5>
+        <p>{{ comment.date|date("F jS, Y") }}</p>
+        <p>{{ comment.text }}</p>
+      </div>
+      <a href="#"><i class="fas fa-trash-alt fa-2x"></i></a>
     </div>
-    <a href="#"><i class="fas fa-trash-alt fa-2x"></i></a>
-  </div>
-  {% endfor %}
+    {% endfor %}
   </div>
 
-  </div>
-  <div class="flex-grow-1"></div>
+</div>
+<div class="flex-grow-1"></div>
 
-   
+
 
 {% endblock %}

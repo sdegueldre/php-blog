@@ -55,9 +55,9 @@
       <!-- Single Comment -->
       {% for comment in article.comments %}
       <hr>
-      <div class="media mb-4">
-        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-        <div class="media-body">
+      <div class="media mb-4 ml-3">
+          <i class="far fa-user-circle fa-3x mt-1"></i>
+        <div class="media-body ml-3">
           <h5 class="mt-0">{{ comment.author }}</h5>
           <p>{{ comment.date|date("F jS, Y") }}</p>
           <p>{{ comment.text }}</p>

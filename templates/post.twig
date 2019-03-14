@@ -8,16 +8,23 @@
       <input type="text" name="title" placeholder="Title" class="form-control form-control-lg post-title">
       <textarea name="text" id="editor"></textarea>
 
-      <div class="form-check d-flex flex-row flex-wrap ">
-        {% for category in categories %}
-        <div class="col-6 col-md-4">
-          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-          <p><label class="form-check-label" for="defaultCheck1">
-              {{category}}
-            </label></p>
+      <div class="card mt-2">
+        <h5 class="card-header">Categories</h5>
+        <div class="card-body">
+          <div class="form-check d-flex flex-row flex-wrap ">
+            {% for category in categories %}
+            <div class="col-6 col-md-4">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <p><label class="form-check-label" for="defaultCheck1">
+                  {{category}}
+                </label></p>
+            </div>
+            {% endfor %}
+          </div>
         </div>
-        {% endfor %}
       </div>
+
+
 
       <button type="submit" class="btn btn-primary my-2">Submit</button>
     </form>
