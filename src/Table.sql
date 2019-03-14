@@ -41,3 +41,6 @@ CREATE TABLE cat_art(
   article_id INT REFERENCES articles(id) NOT NULL ON DELETE CASCADE,
   category_id INT REFERENCES categories(id) NOT NULL ON DELETE CASCADE
 );
+
+INSERT INTO "users" ("username", "email", "password_hash", "permissions")
+VALUES ('admin',	'admin@admin.com',	'$2y$10$jMVTtkvxqh2QwvhQJU3Gj.MdnsnsczYbbkVnimcPFfFNDcvWmynu.',	2);
