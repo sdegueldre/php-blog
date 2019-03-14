@@ -63,7 +63,7 @@ $app->get('/~{domain}/blog[/[{page}]]', function (Request $request, Response $re
 $app->get('/~{domain}/article/{id}', function (Request $request, Response $response, array $args) {
     // Select article from id
     $article = $this->db->query('
-        SELECT title, timestamp as date, text, username as author
+        SELECT articles.id, title, timestamp as date, text, username as author
         FROM articles
         INNER JOIN users
             ON articles.author_id = users.id
@@ -384,17 +384,17 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
 //
 
 $app->post('/~{domain}/article/{id}', function (Request $request, Response $response, array $args) {
-    if (!isset($_SESSION['permission'])) {
+    if (!isset($_SESSION['permissions'])) {
         return $response->withStatus(401);
     }
 
     $comment = $request->getParsedBody();
-    $permission = $_SESSION['permission'];
+    $permission = $_SESSION['permissions'];
     $authorID = $_SESSION['userID'];
     $articleID = $args['id'];
     $text = $comment['text'];
 
-    $insertComment = $this->$db->query('
+    $insertComment = $this->db->query('
         INSERT INTO comments (article_id, author_id, text)
         VALUES (:article_id, :author_id, :text)',
         array(
@@ -404,7 +404,7 @@ $app->post('/~{domain}/article/{id}', function (Request $request, Response $resp
         )
     );
 
-    return $response->withRedirect($this->router->pathFor('article/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
+    return $response->withRedirect($this->router->pathFor('article', ['domain' => $args['domain'], 'id' => $args['id']]));
 });
 
 $app->post('/~{domain}/edit/{id}', function (Request $request, Response $response, array $args) {

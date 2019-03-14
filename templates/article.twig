@@ -40,10 +40,11 @@
       <div class="card my-4">
         <h5 class="card-header">Laisser un commentaire:</h5>
         <div class="card-body">
-          <form action="{#{{ router.pathFor('comment', {'domain': domain, 'id': article.id}) }}#}#" method="post">
+          <form action="{{ router.pathFor('article', {'domain': domain, 'id': article.id}) }}" method="post">
             <div class="form-group">
-              <textarea class="form-control" rows="3" {% if not session.username %} disabled
+              <textarea name="text" class="form-control" rows="3" {% if not session.username %} disabled
                 placeholder="Vous devez être connecté pour commenter" {% endif %}></textarea>
+                <input type="text" name="id" value="{{ article.id }}" hidden>
             </div>
             <button type="submit" class="btn btn-primary"
               {% if not session.username %}disabled{% endif %}>Submit</button>
