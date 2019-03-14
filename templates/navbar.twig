@@ -27,14 +27,16 @@
       <ul class="navbar-nav">
         {% for itemRoute, item in navItems %}
           {% if session.permissions >= item.permissions %}
-            <li class="nav-item {% if itemRoute == route %}active{% endif %}">
-              <a class="nav-link" href="{{ router.pathFor(itemRoute, {'domain':domain}) }}">
-                {{ item.name }}
-                {% if itemRoute == route %}
-                <span class="sr-only">(current)</span>
-                {% endif %}
-              </a>
-            </li>
+            {% if (itemRoute != 'login' and itemRoute != 'signup') or not session.username  %}
+              <li class="nav-item {% if itemRoute == route %}active{% endif %}">
+                <a class="nav-link" href="{{ router.pathFor(itemRoute, {'domain':domain}) }}">
+                  {{ item.name }}
+                  {% if itemRoute == route %}
+                  <span class="sr-only">(current)</span>
+                  {% endif %}
+                </a>
+              </li>
+            {% endif %}
           {% endif %}
         {% endfor %}
       </ul>

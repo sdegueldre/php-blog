@@ -70,18 +70,22 @@
             <th scope="row">{{ user.id }}</th>
             <td>{{ user.username }}</td>
             <td>{{ user.email }} </td>
-            <td>
-              <select class="custom-select" name="permissions">
-                <option value="0" {% if user.permissions == 0 %}selected{% endif %}>Utilisateur</option>
-                <option value="1" {% if user.permissions == 1 %}selected{% endif %}>Auteur</option>
-                <option value="2" {% if user.permissions == 2 %}selected{% endif %}>Admin</option>
-              </select>
-            </td>
-            <td><a href="#"><i class="fas fa-edit"></i></a></td>
-            <td><a href="{# {{ router.pathFor('deleteUser', {'domain': domain, 'id': user.id}) }}#}#"><i class="fas fa-trash-alt"></i></a></td>
+            <form action="{#{{ router.pathFor('user', {'domain': domain, 'id': user.id}) }}#}#" method="put">
+              <td>
+                <select class="custom-select" name="permissions">
+                  <option value="0" {% if user.permissions == 0 %}selected{% endif %}>Utilisateur</option>
+                  <option value="1" {% if user.permissions == 1 %}selected{% endif %}>Auteur</option>
+                  <option value="2" {% if user.permissions == 2 %}selected{% endif %}>Admin</option>
+                </select>
+              </td>
+              <td><a role"button" type="submit" href="#"><i class="fas fa-check-square"></i></a></td>
+            </form>
+            <form class="" action="{# {{ router.pathFor('user', {'domain': domain, 'id': user.id}) }}#}#" method="delete">
+              <td><a role"button" type="submit" href="#"><i class="fas fa-trash-alt"></i></a></td>
+            </form>
           </tr>
           {% endfor %}
-        </tbody> 
+        </tbody>
       </table>
     </div>
     <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
@@ -99,7 +103,7 @@
               <tr>
                 <th scope="row">{{ category.id }}</th>
                 <td> <input type="text" class="inputCatDash" placeholder="{{ category }}"> </input></td>
-                <td><a href="#"><i class="fas fa-edit"></i></a></td>
+                <td><a href="#"><i class="fas fa-check-square"></i></a></td>
                 <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
               </tr>
               {% endfor %}
