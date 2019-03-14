@@ -355,7 +355,16 @@ $app->post('/~{domain}/post', function(Request $request, Response $response, arr
     $title = $article['title'];
     $text = $article['text'];
     $authorID = $_SESSION['userID'];
-    $categoriesID = $article['categories'];
+    $categoriesID = array();
+
+    foreach ($article as $key => $value) {
+      if ($key == 'title' || $key == 'text'){
+        continue;
+      }
+      if ($value == 'true'){
+        array_push($categoriesID, $key);
+      }  
+    }
 
     $articleID = $this->db->query('
         INSERT INTO articles (title, text, author_id)
@@ -463,4 +472,20 @@ $app->put('/~{domain}/article/{id}', function (Request $request, Response $respo
     }
 
     return $response->withRedirect($this->router->pathFor('edit/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
+});
+
+$app->post('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
+  if ($_SESSION['permissions'] < 2) {
+      return $response->withStatus(401);
+  }
+  $category  = $request->getParsedBody();
+  $name = $cat['name'];
+
+  $insertCategory = $this->db->query('
+  INSERT INTO categories (id,name)
+  VALUES (DEFAULT, :name)',
+  array(
+        ':name' => $name,
+      )
+    );
 });
