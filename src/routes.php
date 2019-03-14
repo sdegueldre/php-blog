@@ -429,7 +429,7 @@ $app->post('/~{domain}/dashboard', function (Request $request, Response $respons
       return $response->withStatus(401);
   }
   $category  = $request->getParsedBody();
-  $name = $cat['name'];
+  $name = $category['name'];
 
   $insertCategory = $this->db->query('
   INSERT INTO categories (id,name)
@@ -491,4 +491,62 @@ $app->put('/~{domain}/article/{id}', function (Request $request, Response $respo
     }
 
     return $response->withRedirect($this->router->pathFor('edit/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
+});
+
+// update db when editing user.
+
+$app->put('/~{domain}/users/{id}', function (Request $request, Response $response, array $args) {
+  if ($_SESSION['permissions'] < 2) {
+      return $response->withStatus(401);
+  }
+
+  $permission = $request->getParsedBody();
+
+  $updatePermission = $this->bd->query('
+  UPDATE users
+    SET
+      permissions = :permissions,
+    WHERE users.id = :user_id',
+    array(
+      ':permissions' => $permission,
+      ':user_id' => $args['id'],
+    ));
+    return $response->withRedirect($this->router->pathFor('dashboard', ['domain' => $args['domain'],]));
+});
+
+//delete user from the db.
+
+$app->delete('/~{domain}/users/{id}', function (Request $request, Response $response, array $args) {
+
+  if ($_SESSION['permissions'] < 2) {
+      return $response->withStatus(401);
+  }
+
+  $deleteUser = $this->bd->query('
+      DELETE FROM users
+      WHERE users.id = ?',
+      array($args['id'])
+  );
+      return $response->withRedirect($this->router->pathFor('dashboard', ['domain' => $args['domain'],]));
+});
+
+//delete comments from the db.
+
+$app->delete('/~{domain}/edit/{id}', function (Request $request, Response $response, array $args) {
+
+  if ($_SESSION['permissions'] < 2) {
+      return $response->withStatus(401);
+  }
+  $comment = $request->getParsedBody();
+  $commentid = $comment['id'];
+
+  $deleteComment =$this->bd->query('
+  DELETE FROM comments
+  WHERE comments.id = :comment',
+  array(
+    ':comment' => $commentid,
+  )
+);
+  return $response->withRedirect($this->router->pathFor('edit/{id}', ['domain' => $args['domain'], 'id' => $args['id']]));
+
 });
