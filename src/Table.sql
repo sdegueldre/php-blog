@@ -20,14 +20,14 @@ CREATE TABLE articles (
   title VARCHAR(255) NOT NULL,
   timestamp TIMESTAMP DEFAULT NOW(),
   text TEXT NOT NULL,
-  author_id INT REFERENCES users(id) NOT NULL
+  author_id INT REFERENCES users(id) NOT NULL ON DELETE CASCADE
   -- join Catégorie et Commentaires
 );
 
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY NOT NULL,
-  article_id INT REFERENCES articles(id) NOT NULL,
-  author_id INT REFERENCES users(id) NOT NULL,
+  article_id INT REFERENCES articles(id) NOT NULL ON DELETE CASCADE,
+  author_id INT REFERENCES users(id) NOT NULL ON DELETE CASCADE,
   text TEXT NOT NULL,
   timestamp TIMESTAMP DEFAULT NOW() NOT NULL
 );
@@ -38,6 +38,9 @@ CREATE TABLE categories (
 );
 
 CREATE TABLE cat_art(
-  article_id INT REFERENCES articles(id) NOT NULL,
-  category_id INT REFERENCES categories(id) NOT NULL
+  article_id INT REFERENCES articles(id) NOT NULL ON DELETE CASCADE,
+  category_id INT REFERENCES categories(id) NOT NULL ON DELETE CASCADE
 );
+
+INSERT INTO "users" ("username", "email", "password_hash", "permissions")
+VALUES ('admin',	'admin@admin.com',	'$2y$10$jMVTtkvxqh2QwvhQJU3Gj.MdnsnsczYbbkVnimcPFfFNDcvWmynu.',	2);
