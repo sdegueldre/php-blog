@@ -248,6 +248,10 @@ $app->get('/~{domain}/authors/{author}', function (Request $request, Response $r
 
 //Supply variables for dashboard
 $app->get('/~{domain}/dashboard', function (Request $request, Response $response, array $args) {
+    if ($_SESSION['permissions'] < 2) {
+        return $response->withStatus(401);
+    }
+    
     $articles = $this->db->query('
         SELECT title, articles.id, timestamp as date, text, username as author
         FROM articles
