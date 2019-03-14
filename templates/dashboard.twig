@@ -45,7 +45,10 @@
             <td>{{article.date|date("F jS, Y")}} </td>
             <td>{{ article.author }}</td>
             <td><a href="{{ router.pathFor('edit', {'domain': domain, 'id': article.id}) }}"><i class="fas fa-edit"></i></a></td>
-            <td><a href="{# {{ router.pathFor('delete', {'domain': domain, 'id': article.id}) }} #}#"><i class="fas fa-trash-alt"></i></a></td>
+            <form action="{{ router.pathFor('article', {'domain': domain, 'id': article.id}) }}" method="post" id="articleForm">
+              <input type="hidden" name="_METHOD" value="DELETE"/>
+              <td><a onclick="document.querySelector('#articleForm').submit()" href="#"><i class="fas fa-trash-alt"></i></a></td>
+            </form>
           </tr>
           {% endfor %}
         </tbody>
@@ -70,7 +73,8 @@
             <th scope="row">{{ user.id }}</th>
             <td>{{ user.username }}</td>
             <td>{{ user.email }} </td>
-            <form action="{#{{ router.pathFor('user', {'domain': domain, 'id': user.id}) }}#}#" method="put">
+            <form id="updateUser{{user.id}}" action="{{ router.pathFor('user', {'domain': domain, 'id': user.id}) }}" method="post">
+              <input type="hidden" name="_METHOD" value="PUT"/>
               <td>
                 <select class="custom-select" name="permissions">
                   <option value="0" {% if user.permissions == 0 %}selected{% endif %}>Utilisateur</option>
@@ -78,10 +82,11 @@
                   <option value="2" {% if user.permissions == 2 %}selected{% endif %}>Admin</option>
                 </select>
               </td>
-              <td><a role"button" type="submit" href="#"><i class="fas fa-check-square"></i></a></td>
+              <td><a onclick="document.querySelector('#updateUser{{user.id}}').submit()" href="#"><i class="fas fa-check-square"></i></a></i></a></td>
             </form>
-            <form class="" action="{# {{ router.pathFor('user', {'domain': domain, 'id': user.id}) }}#}#" method="delete">
-              <td><a role"button" type="submit" href="#"><i class="fas fa-trash-alt"></i></a></td>
+            <form id="deleteUser{{user.id}}" class="" action="{{ router.pathFor('user', {'domain': domain, 'id': user.id}) }}" method="post">
+              <input type="hidden" name="_METHOD" value="DELETE"/>
+              <td><a onclick="document.querySelector('#deleteUser{{user.id}}').submit()" href="#"><i class="fas fa-trash-alt"></i></a></td>
             </form>
           </tr>
           {% endfor %}
@@ -102,18 +107,28 @@
               {% for category in categories %}
               <tr>
                 <th scope="row">{{ category.id }}</th>
-                <td> <input type="text" class="inputCatDash" placeholder="{{ category }}"> </input></td>
-                <td><a href="#"><i class="fas fa-check-square"></i></a></td>
-                <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                <form id="editCategory{{category.id}}" action="{{ router.pathFor('categoryById', {'domain': domain, 'id': category.id}) }}" method="post">
+                  <td><input name="name" type="text" class="inputCatDash" value="{{ category.name }}"> </input></td>
+                  <input type="hidden" name="_METHOD" value="PUT"/>
+                  <td><a onclick="document.querySelector('#editCategory{{category.id}}').submit()" href="#"><i class="fas fa-check-square"></i></a></td>
+                </form>
+                <td>
+                  <form id="deleteCategory{{category.id}}" action="{{ router.pathFor('categoryById', {'domain': domain, 'id': category.id}) }}" method="post">
+                    <input type="hidden" name="_METHOD" value="DELETE"/>
+                    <a onclick="document.querySelector('#deleteCategory{{category.id}}').submit()" href="#"><i class="fas fa-trash-alt"></i></a>
+                  </form>
+                </td>
               </tr>
               {% endfor %}
               <tr>
                 <td></td>
-                <td>
-                  <input type="text" class="inputCatDash" placeholder="{{ category }}"> </input></td>
-                <td>
-                <a href="#"> <i class="fas fa-plus-square"></i></a>
-              </td>
+                <form id="categoryForm" action="{{ router.pathFor('dashboard', {'domain': domain}) }}" method="post">
+                  <td>
+                    <input name="name" type="text" class="inputCatDash" placeholder="Nouvelle catégorie..."></input></td>
+                  <td>
+                  <a onclick="document.querySelector('#categoryForm').submit()" href="#"><i class="fas fa-plus-square"></i></a>
+                </form>
+                <td></td>
             </tr>
             </tbody>
           </table>

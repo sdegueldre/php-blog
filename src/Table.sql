@@ -20,14 +20,14 @@ CREATE TABLE articles (
   title VARCHAR(255) NOT NULL,
   timestamp TIMESTAMP DEFAULT NOW(),
   text TEXT NOT NULL,
-  author_id INT REFERENCES users(id) NOT NULL ON DELETE CASCADE
+  author_id INT REFERENCES users(id) ON DELETE CASCADE
   -- join Catégorie et Commentaires
 );
 
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY NOT NULL,
-  article_id INT REFERENCES articles(id) NOT NULL ON DELETE CASCADE,
-  author_id INT REFERENCES users(id) NOT NULL ON DELETE CASCADE,
+  article_id INT REFERENCES articles(id) ON DELETE CASCADE,
+  author_id INT REFERENCES users(id) ON DELETE CASCADE,
   text TEXT NOT NULL,
   timestamp TIMESTAMP DEFAULT NOW() NOT NULL
 );
@@ -38,8 +38,8 @@ CREATE TABLE categories (
 );
 
 CREATE TABLE cat_art(
-  article_id INT REFERENCES articles(id) NOT NULL ON DELETE CASCADE,
-  category_id INT REFERENCES categories(id) NOT NULL ON DELETE CASCADE
+  article_id INT REFERENCES articles(id) ON DELETE CASCADE,
+  category_id INT REFERENCES categories(id) ON DELETE CASCADE
 );
 
 INSERT INTO "users" ("username", "email", "password_hash", "permissions")

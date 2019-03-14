@@ -13,7 +13,7 @@
               {% for category in categories %}
               {% if loop.index0 is divisible by(2) %}
               <li>
-                <a href="{{ router.pathFor('category', {'domain': domain, 'category': category})}}">{{ category }}</a>
+                <a href="{{ router.pathFor('category', {'domain': domain, 'category': category.name})}}">{{ category.name }}</a>
               </li>
               {% endif %}
               {% endfor %}
@@ -24,7 +24,7 @@
               {% for category in categories %}
               {% if not loop.index0 is divisible by(2) %}
               <li>
-                <a href="{{ router.pathFor('category', {'domain': domain, 'category': category})}}">{{ category }}</a>
+                <a href="{{ router.pathFor('category', {'domain': domain, 'category': category.name})}}">{{ category.name }}</a>
               </li>
               {% endif %}
               {% endfor %}

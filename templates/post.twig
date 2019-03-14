@@ -14,9 +14,9 @@
           <div class="form-check d-flex flex-row flex-wrap ">
             {% for category in categories %}
             <div class="col-6 col-md-4">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <input class="form-check-input" type="checkbox" name="{{ category.id }}">
               <p><label class="form-check-label" for="defaultCheck1">
-                  {{category}}
+                  {{ category.name }}
                 </label></p>
             </div>
             {% endfor %}

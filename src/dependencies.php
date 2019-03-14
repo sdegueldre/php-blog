@@ -45,9 +45,8 @@ $container['render'] = function ($c) {
     $twig->addGlobal('session', $_SESSION);
     $twig->addGlobal('navItems', $settings['navbar']);
 
-    $categories = $c->db->query("SELECT name FROM categories");
-    $categories = array_map(function($v){return $v['name'];}, $categories);
-    $authors = $c->db->query("SELECT username FROM users WHERE permissions >= 1");
+    $categories = $c->db->query("SELECT * FROM categories");
+    $authors = $c->db->query("SELECT * FROM users WHERE permissions >= 1");
     $twig->addGlobal('categories', $categories);
     $twig->addGlobal('authors', $authors);
 

@@ -4,23 +4,33 @@
 <div class="container">
   <div class="container py-5 col-lg-8">
     <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
-    <input type="text" placeholder="Title" class="form-control form-control-lg post-title" value="{{ article.title }}">
-    <textarea name="content" id="editor">{{ article.text|nl2br }}</textarea>
-    <div class="card mt-2">
-        <h5 class="card-header">Categories</h5>
-        <div class="card-body">
-          <div class="form-check d-flex flex-row flex-wrap ">
-            {% for category in categories %}
-            <div class="col-6 col-md-4">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-              <p><label class="form-check-label" for="defaultCheck1">
-                  {{category}}
-                </label></p>
+    <form action="{{ router.pathFor('article', {'domain': domain, 'id': article.id})}}" method="post">
+      <input type="hidden" name="_METHOD" value="PUT"/>
+      <input name="title" type="text" placeholder="title" class="form-control form-control-lg post-title" value="{{ article.title }}">
+      <textarea name="text" id="editor">{{ article.text }}</textarea>
+      <select name="authorId">
+        {% for author in authors %}
+            <option value="{{ author.id }}" {% if author.id == article.author_id %}selected{% endif %}>{{ author.username }}</option>
+        {% endfor %}
+      </select>
+      <div class="card mt-2">
+          <h5 class="card-header">Categories</h5>
+          <div class="card-body">
+            <div class="form-check d-flex flex-row flex-wrap ">
+              {% for category in categories %}
+              <div class="col-6 col-md-4">
+                <input class="form-check-input" type="checkbox" name="{{category.id}}"
+                {% if category.name in article.categories %}checked{% endif %}>
+                <p><label class="form-check-label" for="defaultCheck1">
+                    {{category.name}}
+                  </label></p>
+              </div>
+              {% endfor %}
             </div>
-            {% endfor %}
           </div>
         </div>
-      </div>
+        <button type="submit" class="btn btn-primary my-2">Submit</button>
+      </form>
     <script>
       ClassicEditor
         .create(document.querySelector('#editor'), {
@@ -30,7 +40,6 @@
           console.error(error);
         });
     </script>
-    <button type="submit" class="btn btn-primary my-2">Submit</button>
     <!-- Single Comment -->
 
     {% for comment in article.comments %}
@@ -42,7 +51,10 @@
         <p>{{ comment.date|date("F jS, Y") }}</p>
         <p>{{ comment.text }}</p>
       </div>
-      <a href="#"><i class="fas fa-trash-alt fa-2x"></i></a>
+      <form id="deleteComment{{comment.id}}" action="{{ router.pathFor('comment', {'domain': domain, 'id': comment.id})}}" method="post">
+        <input type="hidden" name="_METHOD" value="DELETE"/>
+        <a onclick="document.querySelector('#deleteComment{{comment.id}}').submit()" href="#"><i class="fas fa-trash-alt fa-2x"></i></a>
+      </form>
     </div>
     {% endfor %}
   </div>
