@@ -45,9 +45,9 @@
             <td>{{article.date|date("F jS, Y")}} </td>
             <td>{{ article.author }}</td>
             <td><a href="{{ router.pathFor('edit', {'domain': domain, 'id': article.id}) }}"><i class="fas fa-edit"></i></a></td>
-            <form action="{{ router.pathFor('article', {'domain': domain, 'id': article.id}) }}" method="post" id="articleForm">
+            <form action="{{ router.pathFor('article', {'domain': domain, 'id': article.id}) }}" method="post" id="articleForm{{article.id}}">
               <input type="hidden" name="_METHOD" value="DELETE"/>
-              <td><a onclick="document.querySelector('#articleForm').submit()" href="#"><i class="fas fa-trash-alt"></i></a></td>
+              <td><a onclick="document.querySelector('#articleForm{{article.id}}').submit()" href="#"><i class="fas fa-trash-alt"></i></a></td>
             </form>
           </tr>
           {% endfor %}
