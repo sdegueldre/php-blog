@@ -1,27 +1,60 @@
-# Slim Framework 3 Skeleton Application
+# Php-blog
 
-Use this skeleton application to quickly setup and start working on a new Slim Framework 3 application. This application uses the latest Slim 3 with the PHP-View template renderer. It also uses the Monolog logger.
+This is a blog website. The project was define by Becode. This is our first website using front-end and back-end environment.
+The blog alllows you to sign up, log in with a username.
+The user have 3 types of permissions : Normal user, Author or Admin.
+You can create, edit an article as author and admin. You can delete it as Admin too.
+You can also create categories for articles as author. Edit and delete it as Admin.
 
-This skeleton application was built for Composer. This makes setting up a new Slim Framework application quick and easy.
 
-## Install the Application
+## Getting Started
 
-Run this command from the directory in which you want to install your new Slim Framework application.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-    php composer.phar create-project slim/slim-skeleton [my-app-name]
+### Prerequisites
 
-Replace `[my-app-name]` with the desired directory name for your new application. You'll want to:
+You need to clone this repository
 
-* Point your virtual host document root to your new application's `public/` directory.
-* Ensure `logs/` is web writeable.
+```
+git clone git@github.com:sdegueldre/php-blog.git
+```
 
-To run the application in development, you can run these commands 
+### Installing
 
-	cd [my-app-name]
-	php composer.phar start
+A step by step series of examples that tell you how to get a development env running
 
-Run this command in the application directory to run the test suite
+Say what the step will be
 
-	php composer.phar test
+```
+Give the example
+```
 
-That's it! Now go build something cool.
+And repeat
+
+```
+until finished
+```
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+* [Slim](http://www.slimframework.com/) - Framework used
+* [Twig](https://twig.symfony.com/) - Template generator
+* [PostgresSQL](https://www.postgresql.org/) - Our database
+
+## License
+
+The project use Bootstrap template from https://startbootstrap.com/.
+
+
+## Authors
+
+* **Julien Caramazza**
+* **Simon Fraipont**
+* **Michael Lambrechts**
+* **Simon Degueldre**
