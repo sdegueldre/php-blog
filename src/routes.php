@@ -190,31 +190,29 @@ $app->get('/~{domain}/category/{category}', function (Request $request, Response
     }
 
     $articles = $this->db->query('
-        SELECT articles.id, title, timestamp as date, text, username as authors
-        FROM articles
-            INNER JOIN users
-            ON articles.author_id = users.id ');
-
-    $selectedArticleIds = $this->db->query('
-        SELECT articles.id
+        SELECT articles.id, title, timestamp as date, text, username as author
         FROM cat_art
             INNER JOIN articles
                 ON cat_art.article_id = articles.id
+            INNER JOIN users
+                ON articles.author_id = users.id
             INNER JOIN categories
                 ON cat_art.category_id = categories.id
         WHERE categories.name = ?',
-        array($category['name']));
+        array($category['name'])
+    );
 
-    $selectedArticles = array();
-    foreach($articles as $article) {
-        foreach($selectedArticleIds as $selectedArticleId) {
-            if ($article['id'] == $selectedArticleId['id']) {
-                array_push($selectedArticles, $article);
-            }
-        }
+    foreach ($articles as &$article) {
+        $categories = $this->db->query('
+            SELECT name, categories.id
+            FROM cat_art
+                INNER JOIN categories
+                    on category_id = categories.id
+            WHERE article_id = ?', [$article['id']]);
+        $article['categories'] = array_map(function($v){return $v['name'];}, $categories);
     }
 
-    $args['articles'] = $selectedArticles;
+    $args['articles'] = $articles;
     return ($this->render)($response, 'category.twig', $args);
 })->setName('category');
 
@@ -234,12 +232,23 @@ $app->get('/~{domain}/author/{author}', function (Request $request, Response $re
     }
 
     $articles = $this->db->query('
-        SELECT articles.id, title, timestamp as date, text, username as authors
+        SELECT articles.id, title, timestamp as date, text, username as author
         FROM articles
             INNER JOIN users
             ON articles.author_id = users.id
         WHERE users.id = ?',
-        array($author['id']));
+        array($author['id'])
+    );
+
+    foreach ($articles as &$article) {
+        $categories = $this->db->query('
+            SELECT name, categories.id
+            FROM cat_art
+                INNER JOIN categories
+                    on category_id = categories.id
+            WHERE article_id = ?', [$article['id']]);
+        $article['categories'] = array_map(function($v){return $v['name'];}, $categories);
+    }
 
     $args['articles'] = $articles;
     return ($this->render)($response, 'author.twig', $args);
