@@ -1,8 +1,8 @@
 # Php-blog
 
-This is a blog website. The project was define by Becode. This is our first website using front-end and back-end environment.
+This is a blog website. The project was defined by Becode. This is our first website using front-end and back-end environment.
 The blog alllows you to sign up, log in with a username.
-The user have 3 types of permissions : Normal user, Author or Admin.
+The user has 3 types of permissions : Normal user, Author or Admin.
 You can create, edit an article as author and admin. You can delete it as Admin too.
 You can also create categories for articles as author. Edit and delete it as Admin.
 
@@ -19,27 +19,15 @@ You need to clone this repository
 git clone git@github.com:sdegueldre/php-blog.git
 ```
 
-### Installing
+### Run it on local
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+Just go on the folder where you cloned the repo and run it by the console
 
 ```
-Give the example
+npm run dev
 ```
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+To run it on server we use a deployemet script. - deploy.sh
 
 ## Built With
 
@@ -49,7 +37,7 @@ Add additional notes about how to deploy this on a live system
 
 ## License
 
-The project use Bootstrap template from https://startbootstrap.com/.
+The project uses Bootstrap template from https://startbootstrap.com/.
 
 
 ## Authors
