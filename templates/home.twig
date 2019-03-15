@@ -24,13 +24,13 @@
       {% endfor %}
       <!-- Pagination -->
       <ul class="pagination justify-content-center mb-4">
-        <li class="page-item {% if page >= nbArticles / 5 %}
+        <li class="page-item {% if (page >= nbArticles / 5) %}
           disabled
         {% endif %}">
           <a class="page-link" href="{{ router.pathFor('home', {'domain': domain, 'page': page + 1}) }}
            ">&larr; Older</a>
         </li>
-        <li class="page-item {% if page <= nbArticles / 5 %}
+        <li class="page-item {% if page <= 1 %}
           disabled
         {% endif %}">
           <a class="page-link" href="{{ router.pathFor('home', {'domain': domain, 'page': page - 1}) }}">Newer &rarr;</a>
