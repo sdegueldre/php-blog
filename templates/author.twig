@@ -7,15 +7,7 @@
     <!-- Blog Entries Column -->
     <div class="col-lg-8">
 
-      <h1 class="my-4">Les articles écrits par {{ author }}</h1>
-
-      <!-- Blog Post -->
-      <!-- <div class="card mb-4">
-        <p class="card-text">
-          There are currently {{ nbArticles }} articles,
-          {{ authors|length }} authors and {{ categories|length }} categories.
-        </p>
-      </div> -->
+      <h1 class="my-4">Articles written by {{ author }}</h1>
 
       {% for article in articles %}
       {{ include("articleCard.twig") }}

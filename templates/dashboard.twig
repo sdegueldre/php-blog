@@ -1,26 +1,13 @@
 {% extends 'common.twig' %}
 
 {% block content %}
-{# <h2>Article list:</h2>
-  {% for article in articles %}
-    <p><strong>{{ article.title }}</strong> by {{ article.author }} on {{ article.date|date("F jS, Y") }}</p>
-    <p>
-      {% for category in article.categories %}
-        {{ category }}
-      {% endfor %}
-    </p>
-  {% endfor %}
-  <h2>Category list:</h2>
-  {% for category in categories %}
-      <p>{{ category }}</p>
-  {% endfor %} #}
 <div class="container-fluid mx-0 d-xs-inline-flex d-sm-flex px-0 align-items-stretch flex-grow-1">
   <div class="nav flex-sm-column nav-pills text-light bg-secondary " id="v-pills-tab" role="tablist"
     aria-orientation="vertical">
     <a class="nav-link w-100 nav-custom active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
       aria-controls="v-pills-home" aria-selected="true">Articles</a>
     <a class="nav-link nav-custom w-100" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-      aria-controls="v-pills-profile" aria-selected="false">Membres</a>
+      aria-controls="v-pills-profile" aria-selected="false">Members</a>
     <a class="nav-link nav-custom w-100" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
       aria-controls="v-pills-messages" aria-selected="false">Categories</a>
   </div>
@@ -30,9 +17,9 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Titre</th>
+            <th scope="col">Title</th>
             <th scope="col">Date</th>
-            <th scope="col">Auteur</th>
+            <th scope="col">Author</th>
             <th scope="col"></th>
             <th scope="col"></th>
           </tr>
@@ -60,7 +47,7 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Nom</th>
+            <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Permission</th>
             <th scope="col"></th>
