@@ -190,7 +190,7 @@ $app->get('/~{domain}/category/{category}', function (Request $request, Response
     }
 
     $articles = $this->db->query('
-        SELECT articles.id, title, timestamp as date, text, username as authors
+        SELECT articles.id, title, timestamp as date, text, username as author
         FROM articles
             INNER JOIN users
             ON articles.author_id = users.id ');
@@ -234,7 +234,7 @@ $app->get('/~{domain}/author/{author}', function (Request $request, Response $re
     }
 
     $articles = $this->db->query('
-        SELECT articles.id, title, timestamp as date, text, username as authors
+        SELECT articles.id, title, timestamp as date, text, username as author
         FROM articles
             INNER JOIN users
             ON articles.author_id = users.id

@@ -33,10 +33,15 @@ body {
 }
 
 .nav-custom{
-  width: 150px;
   border-radius: 0 !important;
+  text-align: center;
 }
-
+@include media-breakpoint-up(sm){
+  .nav-custom{
+    width: 150px !important;
+    text-align: left;
+  }
+}
 .dropdown-toggle::after{
   display:none;
 }
