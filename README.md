@@ -47,6 +47,10 @@ Add additional notes about how to deploy this on a live system
 * [Twig](https://twig.symfony.com/) - Template generator
 * [PostgresSQL](https://www.postgresql.org/) - Our database
 
+## License
+
+The project use Bootstrap template from https://startbootstrap.com/.
+
 
 ## Authors
 
