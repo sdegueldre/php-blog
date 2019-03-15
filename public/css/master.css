@@ -7344,8 +7344,13 @@ body {
     box-shadow: none; }
 
 .nav-custom {
-  width: 150px;
-  border-radius: 0 !important; }
+  border-radius: 0 !important;
+  text-align: center; }
+
+@media (min-width: 576px) {
+  .nav-custom {
+    width: 150px !important;
+    text-align: left; } }
 
 .dropdown-toggle::after {
   display: none; }
