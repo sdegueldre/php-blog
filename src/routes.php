@@ -428,6 +428,7 @@ $app->put('/~{domain}/article/{id}', function (Request $request, Response $respo
     $this->logger->info(print_r($article, true));
     $title = $article['title'];
     $text = $article['text'];
+    $date = $article['date'];
     $author_id = $article['authorId'];
     $categoriesID = array();
 
@@ -442,11 +443,13 @@ $app->put('/~{domain}/article/{id}', function (Request $request, Response $respo
         UPDATE articles
         SET
             title = :title,
+            timestamp = to_timestamp(:date, \'YYYY-MM-DD HH24:MI\'),
             text = :text,
             author_id = :author_id
         WHERE articles.id = :articles_id',
         array(
             ':title' => $title,
+            'date' => $date,
             ':text'=> $text,
             ':author_id' => $author_id,
             ':articles_id' => $args['id'],
