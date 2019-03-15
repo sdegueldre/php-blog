@@ -11,14 +11,6 @@
         <small>from Farts & Dabs</small>
       </h1>
 
-      <!-- Blog Post -->
-      <!-- <div class="card mb-4">
-        <p class="card-text">
-          There are currently {{ nbArticles }} articles,
-          {{ authors|length }} authors and {{ categories|length }} categories.
-        </p>
-      </div> -->
-
       {% for article in articles %}
       {{ include("articleCard.twig") }}
       {% endfor %}
