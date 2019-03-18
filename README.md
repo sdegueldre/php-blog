@@ -1,27 +1,56 @@
-# Slim Framework 3 Skeleton Application
+# Php-blog
 
-Use this skeleton application to quickly setup and start working on a new Slim Framework 3 application. This application uses the latest Slim 3 with the PHP-View template renderer. It also uses the Monolog logger.
+This is a blog website. The project was defined by Becode. This is our first website using front-end and back-end environment.
+The blog alllows you to sign up, log in with a username.
+The user has 3 types of permissions : Normal user, Author or Admin.
+You can create, edit an article as author and admin. You can delete it as Admin too.
+You can also create categories for articles as author. Edit and delete it as Admin.
 
-This skeleton application was built for Composer. This makes setting up a new Slim Framework application quick and easy.
 
-## Install the Application
+## Getting Started
 
-Run this command from the directory in which you want to install your new Slim Framework application.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-    php composer.phar create-project slim/slim-skeleton [my-app-name]
+### Prerequisites
 
-Replace `[my-app-name]` with the desired directory name for your new application. You'll want to:
+You need to clone this repository
 
-* Point your virtual host document root to your new application's `public/` directory.
-* Ensure `logs/` is web writeable.
+```
+git clone git@github.com:sdegueldre/php-blog.git
+```
 
-To run the application in development, you can run these commands 
+### Run it on local
 
-	cd [my-app-name]
-	php composer.phar start
+Just go on the folder where you cloned the repo and run it by the console
 
-Run this command in the application directory to run the test suite
+```
+npm run dev
+```
 
-	php composer.phar test
+To run it on server we use a deployemet script. - deploy.sh
 
-That's it! Now go build something cool.
+Use the commande
+```
+./deploy.sh --the server you want to deploy on--
+```
+Example of the server you want to deploy on : user@server.local
+This will rebuild the public_html folder.
+You will need to manually set the correct credentials for the data base by opening the settings.php file located in the src subdirectory. 
+
+## Built With
+
+* [Slim](http://www.slimframework.com/) - Framework used
+* [Twig](https://twig.symfony.com/) - Template generator
+* [PostgresSQL](https://www.postgresql.org/) - Our database
+
+## License
+
+The project uses Bootstrap template from https://startbootstrap.com/.
+
+
+## Authors
+
+* **Julien Caramazza**
+* **Simon Fraipont**
+* **Michael Lambrechts**
+* **Samuel Degueldre**
