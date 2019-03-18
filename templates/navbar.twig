@@ -12,8 +12,8 @@
         <div class="dropdown-menu dropdown-menu-right position-absolute text-right" aria-labelledby="navbarDropdown">
             <p class="dropdown-item disabled">You're logged in as {{ session.username }}</p>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/~a/logout">logout</a>
-          {# <a href="{{ router.pathFor("logout", {'domain': domain}) }}"></a> #}
+          {# <a class="dropdown-item" href="/~a/logout">logout</a> #}
+           <a href="{{ router.pathFor("logout", {'domain': domain}) }}"></a> 
         </div>
       </li>
     </ul>
@@ -52,8 +52,8 @@
         <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="navbarDropdown">
           <p class="dropdown-item disabled">You're logged in as {{ session.username }}</p>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/~a/logout">logout</a>
-          {# <a href="{{ router.pathFor("logout", {'domain': domain}) }}"></a> #}
+          {#<a class="dropdown-item" href="/~a/logout">logout</a>#}
+          <a href="{{ router.pathFor("logout", {'domain': domain}) }}"></a>
         </div>
       </li>
     </ul>
