@@ -45,4 +45,4 @@ The project uses Bootstrap template from https://startbootstrap.com/.
 * **Julien Caramazza**
 * **Simon Fraipont**
 * **Michael Lambrechts**
-* **Simon Degueldre**
+* **Samuel Degueldre**
