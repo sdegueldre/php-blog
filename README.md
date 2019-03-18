@@ -29,6 +29,14 @@ npm run dev
 
 To run it on server we use a deployemet script. - deploy.sh
 
+Use the commande
+```
+./deploy.sh --the server you want to deploy on--
+```
+Example of the server you want to deploy on : user@server.local
+This will rebuild the public_html folder.
+You will need to manually set the correct credentials for the data base by opening the settings.php file located in the src subdirectory. 
+
 ## Built With
 
 * [Slim](http://www.slimframework.com/) - Framework used
